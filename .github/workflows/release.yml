@@ -114,12 +114,15 @@ jobs:
             --title "$GITHUB_REF_NAME" \
             --notes-file release-notes.md $flag
 
+  # La publicación en el Marketplace y en npm es opcional: solo corre si existen las
+  # variables del repositorio PUBLISH_MARKETPLACE / PUBLISH_NPM con valor "true" (y sus
+  # secretos). Sin ellas, el release solo crea el GitHub Release con el .vsix.
   # El Marketplace no acepta versiones con sufijo (1.2.3-beta.1):
   # las pre-releases solo van a npm (tag "next") y a GitHub.
   publish-marketplace:
     name: Visual Studio Marketplace
     needs: verify
-    if: github.ref_type == 'tag' && needs.verify.outputs.prerelease == 'false'
+    if: github.ref_type == 'tag' && needs.verify.outputs.prerelease == 'false' && vars.PUBLISH_MARKETPLACE == 'true'
     runs-on: ubuntu-latest
     environment: production
     env:
@@ -145,7 +148,7 @@ jobs:
   publish-npm:
     name: npm (lupa-a11y-core)
     needs: verify
-    if: github.ref_type == 'tag'
+    if: github.ref_type == 'tag' && vars.PUBLISH_NPM == 'true'
     runs-on: ubuntu-latest
     environment: production
     permissions:
