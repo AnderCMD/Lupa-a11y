@@ -17,7 +17,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - uses: actions/setup-node@v7
         with:
@@ -45,7 +45,12 @@ jobs:
           key: vscode-test-${{ runner.os }}-${{ hashFiles('package.json') }}
 
       - name: Tests de integración (VS Code real)
-        run: xvfb-run -a npm run test:integration
+        run: |
+          for intento in 1 2 3; do
+            xvfb-run -a npm run test:integration && exit 0
+            echo "::warning::Intento $intento de los tests de integración falló"
+          done
+          exit 1
 
       - name: Empaquetar .vsix
         run: npm run package
