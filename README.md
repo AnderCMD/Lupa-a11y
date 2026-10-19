@@ -8,6 +8,9 @@
 # Lupa A11y
 
 [![CI](https://github.com/AnderCMD/Lupa-a11y/actions/workflows/ci.yml/badge.svg)](https://github.com/AnderCMD/Lupa-a11y/actions/workflows/ci.yml)
+[![VS Code Marketplace](https://img.shields.io/visual-studio-marketplace/v/AnderCMD.lupa-a11y?label=VS%20Code%20Marketplace)](https://marketplace.visualstudio.com/items?itemName=AnderCMD.lupa-a11y)
+[![Instalaciones](https://img.shields.io/visual-studio-marketplace/i/AnderCMD.lupa-a11y?label=instalaciones)](https://marketplace.visualstudio.com/items?itemName=AnderCMD.lupa-a11y)
+[![npm](https://img.shields.io/npm/v/lupa-a11y-core?label=npm%20lupa-a11y-core)](https://www.npmjs.com/package/lupa-a11y-core)
 [![Licencia: MIT](https://img.shields.io/badge/licencia-MIT-blue.svg)](LICENSE)
 
 **Linter de accesibilidad para React (JSX/TSX) con explicaciones en español.**
@@ -31,13 +34,21 @@ Ya hay linters de accesibilidad muy buenos, pero están en inglés. Lupa A11y no
 
 ## Instalación
 
-Desde la línea de comandos, con el `.vsix` de la [última CI](../../actions) o generado por ti (`npm run package`):
+**Desde el Marketplace** (recomendado): [instalar Lupa A11y en VS Code](https://vscode.dev/redirect?url=vscode:extension/AnderCMD.lupa-a11y), buscar "Lupa A11y" en la vista de extensiones, o:
+
+```bash
+code --install-extension AnderCMD.lupa-a11y
+```
+
+Página de la extensión: [marketplace.visualstudio.com/items?itemName=AnderCMD.lupa-a11y](https://marketplace.visualstudio.com/items?itemName=AnderCMD.lupa-a11y).
+
+**Desde un `.vsix`**, el de la [última release](https://github.com/AnderCMD/Lupa-a11y/releases/latest) o generado por ti (`npm run package`):
 
 ```bash
 code --install-extension lupa-a11y-1.0.1.vsix
 ```
 
-Requiere VS Code 1.100 o superior. Cuando se publique en el Marketplace bastará con buscar "Lupa A11y".
+Requiere VS Code 1.100 o superior.
 
 ## Uso
 
@@ -120,7 +131,7 @@ Quick fixes disponibles: `alt-text`, `click-events-have-key-events`, `no-static-
 
 ## Librería para tus propias herramientas
 
-El núcleo (traducciones, motor y quick fixes, sin VS Code) se publica en npm como [`lupa-a11y-core`](https://www.npmjs.com/package/lupa-a11y-core). Ejemplo de uso en su README.
+El núcleo (traducciones, motor y quick fixes, sin VS Code) se publica en npm como [`lupa-a11y-core`](https://www.npmjs.com/package/lupa-a11y-core) (`npm install lupa-a11y-core eslint`). Ejemplo de uso en su README.
 
 ## Hoja de ruta
 
