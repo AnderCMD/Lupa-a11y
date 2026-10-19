@@ -39,7 +39,7 @@ jobs:
           npm pack ./dist-lib --dry-run
 
       - name: Cache VS Code para los tests de integración
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: .vscode-test
           key: vscode-test-${{ runner.os }}-${{ hashFiles('package.json') }}
@@ -50,7 +50,7 @@ jobs:
       - name: Empaquetar .vsix
         run: npm run package
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: lupa-a11y-vsix
           path: "*.vsix"
