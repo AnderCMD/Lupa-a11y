@@ -34,7 +34,7 @@ Ya hay linters de accesibilidad muy buenos, pero están en inglés. Lupa A11y no
 Desde la línea de comandos, con el `.vsix` de la [última CI](../../actions) o generado por ti (`npm run package`):
 
 ```bash
-code --install-extension lupa-a11y-0.1.0.vsix
+code --install-extension lupa-a11y-1.0.0.vsix
 ```
 
 Requiere VS Code 1.100 o superior. Cuando se publique en el Marketplace bastará con buscar "Lupa A11y".
