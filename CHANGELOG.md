@@ -6,6 +6,12 @@ El formato sigue [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y e
 
 ## [Sin publicar]
 
+## [1.0.1] - 2026-10-19
+
+### Corregido
+
+- El id del editor en el Marketplace es `AnderCMD` (con esas mayúsculas); se corrige `publisher` en `package.json`.
+
 ## [1.0.0] - 2026-10-19
 
 ### Añadido
