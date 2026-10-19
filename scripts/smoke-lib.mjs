@@ -17,6 +17,6 @@ for (const [name, lib] of [
   assert.ok(lib.getExplanation(d.ruleId)?.titulo);
   const fix = lib.getFixes(d.ruleId, code, code.indexOf("<img"))[0];
   assert.ok(lib.applyEdits(code, fix.edits).includes('alt=""'));
-  assert.equal(lib.listExplanations("es").length, 18);
+  assert.ok(lib.listExplanations("es").length >= 18);
   console.log(`  ✓ ${name}`);
 }

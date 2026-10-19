@@ -16,6 +16,23 @@ import { noAutofocus } from "./es/no-autofocus";
 import { noStaticElementInteractions } from "./es/no-static-element-interactions";
 import { roleHasRequiredAriaProps } from "./es/role-has-required-aria-props";
 import { tabindexNoPositive } from "./es/tabindex-no-positive";
+import { anchorAmbiguousText } from "./es/anchor-ambiguous-text";
+import { ariaActivedescendantHasTabindex } from "./es/aria-activedescendant-has-tabindex";
+import { ariaProptypes } from "./es/aria-proptypes";
+import { ariaUnsupportedElements } from "./es/aria-unsupported-elements";
+import { autocompleteValid } from "./es/autocomplete-valid";
+import { lang } from "./es/lang";
+import { mouseEventsHaveKeyEvents } from "./es/mouse-events-have-key-events";
+import { noAccessKey } from "./es/no-access-key";
+import { noAriaHiddenOnFocusable } from "./es/no-aria-hidden-on-focusable";
+import { noDistractingElements } from "./es/no-distracting-elements";
+import { noInteractiveElementToNoninteractiveRole } from "./es/no-interactive-element-to-noninteractive-role";
+import { noNoninteractiveElementInteractions } from "./es/no-noninteractive-element-interactions";
+import { noNoninteractiveElementToInteractiveRole } from "./es/no-noninteractive-element-to-interactive-role";
+import { noNoninteractiveTabindex } from "./es/no-noninteractive-tabindex";
+import { noRedundantRoles } from "./es/no-redundant-roles";
+import { roleSupportsAriaProps } from "./es/role-supports-aria-props";
+import { scope } from "./es/scope";
 import { PENDING_RULES } from "./pending";
 import type { RuleExplanation } from "./types";
 
@@ -45,6 +62,23 @@ const registry: Record<string, readonly RuleExplanation[]> = {
     tabindexNoPositive,
     mediaHasCaption,
     iframeHasTitle,
+    anchorAmbiguousText,
+    ariaActivedescendantHasTabindex,
+    ariaProptypes,
+    ariaUnsupportedElements,
+    autocompleteValid,
+    lang,
+    mouseEventsHaveKeyEvents,
+    noAccessKey,
+    noAriaHiddenOnFocusable,
+    noDistractingElements,
+    noInteractiveElementToNoninteractiveRole,
+    noNoninteractiveElementInteractions,
+    noNoninteractiveElementToInteractiveRole,
+    noNoninteractiveTabindex,
+    noRedundantRoles,
+    roleSupportsAriaProps,
+    scope,
   ],
 };
 

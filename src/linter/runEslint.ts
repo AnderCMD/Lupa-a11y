@@ -25,6 +25,31 @@ function presetConfig(): Linter.Config[] {
     "error",
     { words: ["imagen", "foto", "fotografía", "fotografia"] },
   ];
+  // Reglas útiles que `recommended` no activa. `words` reemplaza la lista por
+  // defecto (en inglés), así que se incluyen también las inglesas.
+  rules["jsx-a11y/anchor-ambiguous-text"] = [
+    "error",
+    {
+      words: [
+        "click here",
+        "here",
+        "link",
+        "a link",
+        "learn more",
+        "clic aquí",
+        "haz clic aquí",
+        "aquí",
+        "enlace",
+        "un enlace",
+        "más información",
+        "leer más",
+        "ver más",
+        "más",
+      ],
+    },
+  ];
+  rules["jsx-a11y/lang"] = "error";
+  rules["jsx-a11y/no-aria-hidden-on-focusable"] = "error";
   const controlLabel =
     jsxA11y.flatConfigs.recommended.rules?.["jsx-a11y/control-has-associated-label"];
   if (Array.isArray(controlLabel)) {

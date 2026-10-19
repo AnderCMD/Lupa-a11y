@@ -24,11 +24,11 @@ describe("mapMessages", () => {
 
   it("sin traducción usa el mensaje original con sufijo", () => {
     const [d] = mapMessages([
-      { ruleId: "jsx-a11y/no-access-key", message: "Original", line: 1, column: 1 },
+      { ruleId: "jsx-a11y/no-onchange", message: "Original", line: 1, column: 1 },
     ]);
     expect(d?.message).toBe("Original (sin traducir)");
     expect(d?.translated).toBe(false);
-    expect(d?.docsUrl).toContain("docs/rules/no-access-key.md");
+    expect(d?.docsUrl).toContain("docs/rules/no-onchange.md");
   });
 
   it("respeta ignoreRules", () => {
