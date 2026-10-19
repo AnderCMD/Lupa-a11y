@@ -1,30 +1,12 @@
-import { readFileSync } from "node:fs";
+import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { getExplanation } from "../src/i18n";
+import { getExplanation, listExplanations } from "../src/i18n";
 import { mapMessages } from "../src/linter/mapDiagnostics";
 import { runEslint } from "../src/linter/runEslint";
 
-const RULES = [
-  "alt-text",
-  "anchor-is-valid",
-  "anchor-has-content",
-  "click-events-have-key-events",
-  "no-static-element-interactions",
-  "interactive-supports-focus",
-  "label-has-associated-control",
-  "control-has-associated-label",
-  "aria-props",
-  "aria-role",
-  "role-has-required-aria-props",
-  "heading-has-content",
-  "html-has-lang",
-  "img-redundant-alt",
-  "no-autofocus",
-  "tabindex-no-positive",
-  "media-has-caption",
-  "iframe-has-title",
-];
+// Cada carpeta de test/fixtures es una regla traducida (ver también i18n.test.ts).
+const RULES = readdirSync(join(__dirname, "fixtures")).sort();
 
 function lintFixture(rule: string, name: "malo" | "bueno") {
   const file = join(__dirname, "fixtures", rule, `${name}.tsx`);
@@ -43,5 +25,14 @@ describe.each(RULES)("fixtures de %s", (rule) => {
 
   it("bueno.tsx no produce diagnósticos", () => {
     expect(lintFixture(rule, "bueno")).toEqual([]);
+  });
+});
+
+describe("cobertura de fixtures", () => {
+  it("hay fixtures para todas las reglas traducidas y solo para ellas", () => {
+    const translated = listExplanations("es")
+      .map((t) => t.ruleId.replace("jsx-a11y/", ""))
+      .sort();
+    expect(RULES).toEqual(translated);
   });
 });

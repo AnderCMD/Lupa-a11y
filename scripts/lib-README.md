@@ -2,7 +2,7 @@
 
 Núcleo de [Lupa A11y](https://github.com/AnderCMD/Lupa-a11y) sin dependencias de VS Code: el linter de accesibilidad para JSX/TSX con explicaciones en español, listo para usar en tus propias herramientas.
 
-- **Traducciones** de 18 reglas de `eslint-plugin-jsx-a11y` (título, por qué importa, a quién afecta, ejemplo mal/bien, criterio WCAG 2.2).
+- **Traducciones** de 35 reglas de `eslint-plugin-jsx-a11y` (título, por qué importa, a quién afecta, ejemplo mal/bien, criterio WCAG 2.2).
 - **Motor**: ejecuta `jsx-a11y` en memoria con el preset de Lupa A11y y mapea los mensajes a español.
 - **Quick fixes seguros** como ediciones de texto por offsets (nunca inventan contenido descriptivo).
 
