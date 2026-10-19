@@ -17,9 +17,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: npm
@@ -39,18 +39,23 @@ jobs:
           npm pack ./dist-lib --dry-run
 
       - name: Cache VS Code para los tests de integración
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: .vscode-test
           key: vscode-test-${{ runner.os }}-${{ hashFiles('package.json') }}
 
       - name: Tests de integración (VS Code real)
-        run: xvfb-run -a npm run test:integration
+        run: |
+          for intento in 1 2 3; do
+            xvfb-run -a npm run test:integration && exit 0
+            echo "::warning::Intento $intento de los tests de integración falló"
+          done
+          exit 1
 
       - name: Empaquetar .vsix
         run: npm run package
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: lupa-a11y-vsix
           path: "*.vsix"

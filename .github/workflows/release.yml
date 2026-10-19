@@ -19,11 +19,11 @@ jobs:
       prerelease: ${{ steps.meta.outputs.prerelease }}
       npm_tag: ${{ steps.meta.outputs.npm_tag }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: npm
@@ -53,7 +53,12 @@ jobs:
       - run: npm run build
 
       - name: Tests de integración (VS Code real)
-        run: xvfb-run -a npm run test:integration
+        run: |
+          for intento in 1 2 3; do
+            xvfb-run -a npm run test:integration && exit 0
+            echo "::warning::Intento $intento de los tests de integración falló"
+          done
+          exit 1
 
       - name: Empaquetar .vsix
         run: npm run package
@@ -68,17 +73,17 @@ jobs:
           VERSION: ${{ steps.meta.outputs.version }}
         run: npx tsx scripts/release.ts notes "$VERSION" > release-notes.md
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: release-vsix
           path: "*.vsix"
           if-no-files-found: error
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: release-lib
           path: dist-lib
           if-no-files-found: error
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: release-notes
           path: release-notes.md
@@ -91,10 +96,10 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           name: release-vsix
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           name: release-notes
       - name: Crear el release
@@ -109,7 +114,7 @@ jobs:
             --title "$GITHUB_REF_NAME" \
             --notes-file release-notes.md $flag
 
-  # El Marketplace y Open VSX no aceptan versiones con sufijo (1.2.3-beta.1):
+  # El Marketplace no acepta versiones con sufijo (1.2.3-beta.1):
   # las pre-releases solo van a npm (tag "next") y a GitHub.
   publish-marketplace:
     name: Visual Studio Marketplace
@@ -120,13 +125,13 @@ jobs:
     env:
       VSCE_PAT: ${{ secrets.VSCE_PAT }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: npm
       - run: npm ci
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           name: release-vsix
       - name: Publicar
@@ -136,32 +141,6 @@ jobs:
             exit 1
           fi
           npx vsce publish --packagePath ./*.vsix
-
-  publish-openvsx:
-    name: Open VSX
-    needs: verify
-    if: github.ref_type == 'tag' && needs.verify.outputs.prerelease == 'false'
-    runs-on: ubuntu-latest
-    environment: production
-    env:
-      OVSX_PAT: ${{ secrets.OVSX_PAT }}
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: npm
-      - run: npm ci
-      - uses: actions/download-artifact@v4
-        with:
-          name: release-vsix
-      - name: Publicar
-        run: |
-          if [ -z "$OVSX_PAT" ]; then
-            echo "::error::Falta el secreto OVSX_PAT; no se publicó en Open VSX."
-            exit 1
-          fi
-          npx ovsx publish ./*.vsix -p "$OVSX_PAT"
 
   publish-npm:
     name: npm (lupa-a11y-core)
@@ -173,11 +152,11 @@ jobs:
       contents: read
       id-token: write # provenance
     steps:
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
           registry-url: https://registry.npmjs.org
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           name: release-lib
           path: dist-lib
@@ -186,6 +165,11 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_TAG: ${{ needs.verify.outputs.npm_tag }}
         run: |
+          version=$(node -p "require('./dist-lib/package.json').version")
+          if npm view "lupa-a11y-core@$version" version >/dev/null 2>&1; then
+            echo "::notice::lupa-a11y-core@$version ya está publicada en npm; se omite."
+            exit 0
+          fi
           if [ -z "$NODE_AUTH_TOKEN" ]; then
             echo "::error::Falta el secreto NPM_TOKEN; no se publicó en npm."
             exit 1

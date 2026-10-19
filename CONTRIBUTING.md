@@ -36,7 +36,7 @@ Sin configurar nada, `@vscode/test-electron` descarga una copia de VS Code. Si p
 
 ## Añadir o mejorar la traducción de una regla
 
-1. Mira qué reglas faltan en [`src/i18n/pending.ts`](src/i18n/pending.ts).
+1. Mira qué reglas faltan en [`src/i18n/pending.ts`](src/i18n/pending.ts) (hoy son 4: tres obsoletas y una opinionada) o propón mejoras a una traducción existente.
 2. Crea `src/i18n/es/<nombre-de-la-regla>.ts` con la plantilla de abajo.
 3. Regístrala en [`src/i18n/index.ts`](src/i18n/index.ts) y **quítala de `pending.ts`**.
 4. Crea `test/fixtures/<regla>/malo.tsx` (debe producir exactamente ese diagnóstico) y `bueno.tsx` (no debe producir ninguno) y añade la regla a la lista de `test/fixtures.test.ts`.
