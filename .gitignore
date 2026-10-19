@@ -4,3 +4,4 @@ dist/
 .vscode-test/
 assets/brand/preview-sheet.png
 dist-test/
+dist-lib/

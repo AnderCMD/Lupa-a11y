@@ -2,6 +2,10 @@
 
 ¡Gracias por ayudar! El valor de este proyecto está en la **calidad de los textos en español**, así que las mejores contribuciones son traducciones nuevas o mejoras a las existentes.
 
+## Ramas y PR
+
+`main` es producción y `dev` es desarrollo. Crea tu rama desde `dev` y abre el PR **a `dev`**; `main` solo recibe PR desde `dev`. Detalles en [docs/flujo-de-trabajo.md](docs/flujo-de-trabajo.md).
+
 ## Preparar el entorno
 
 Necesitas Node 22 o superior.
@@ -96,4 +100,4 @@ El logotipo se genera con `npm run build:brand` (no edites los PNG a mano). Deta
 
 ## Publicar (solo mantenedores)
 
-Ver [docs/publicar.md](docs/publicar.md).
+Automático al etiquetar `vX.Y.Z` en `main`: ver [docs/flujo-de-trabajo.md](docs/flujo-de-trabajo.md).

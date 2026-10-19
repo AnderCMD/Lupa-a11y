@@ -138,7 +138,11 @@
     "format:check": "prettier --check .",
     "package": "vsce package --no-dependencies",
     "build:tests": "node esbuild.mjs --tests",
-    "test:integration": "npm run build && npm run build:tests && tsx test/integration/runTest.ts"
+    "test:integration": "npm run build && npm run build:tests && tsx test/integration/runTest.ts",
+    "build:lib": "tsx scripts/build-lib.ts",
+    "smoke:lib": "node scripts/smoke-lib.mjs",
+    "release:check": "tsx scripts/release.ts check",
+    "release:prepare": "tsx scripts/release.ts prepare"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.5",
@@ -153,6 +157,7 @@
     "eslint": "^9.39.5",
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "opentype.js": "^2.0.0",
+    "ovsx": "^1.3.0",
     "prettier": "^3.9.10",
     "svgo": "^4.1.0",
     "tsx": "^4.23.15",
@@ -163,5 +168,6 @@
   "bugs": {
     "url": "https://github.com/AnderCMD/Lupa-a11y/issues"
   },
-  "homepage": "https://github.com/AnderCMD/Lupa-a11y#readme"
+  "homepage": "https://github.com/AnderCMD/Lupa-a11y#readme",
+  "private": true
 }

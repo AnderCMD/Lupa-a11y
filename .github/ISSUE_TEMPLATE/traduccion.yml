@@ -1,0 +1,18 @@
+name: Mejora de una traducción
+description: Un texto en español que se puede explicar mejor, o una regla sin traducir
+labels: [traducción]
+body:
+  - type: input
+    id: regla
+    attributes:
+      label: Regla
+      placeholder: jsx-a11y/no-access-key
+    validations:
+      required: true
+  - type: textarea
+    id: propuesta
+    attributes:
+      label: Propuesta
+      description: El texto que cambiarías y por qué. Revisa la guía de estilo de CONTRIBUTING.md.
+    validations:
+      required: true

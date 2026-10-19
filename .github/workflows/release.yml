@@ -1,0 +1,193 @@
+name: Release
+
+# Se dispara al subir una etiqueta vX.Y.Z creada desde main.
+# "Run workflow" (workflow_dispatch) hace un ensayo: construye todo, no publica nada.
+on:
+  push:
+    tags: ["v*.*.*"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: Verificar y construir
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.meta.outputs.version }}
+      prerelease: ${{ steps.meta.outputs.prerelease }}
+      npm_tag: ${{ steps.meta.outputs.npm_tag }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: La etiqueta debe estar en main
+        if: github.ref_type == 'tag'
+        run: |
+          git fetch origin main
+          if ! git merge-base --is-ancestor "$GITHUB_SHA" origin/main; then
+            echo "::error::La etiqueta ${GITHUB_REF_NAME} no apunta a un commit de main."
+            exit 1
+          fi
+
+      - run: npm ci
+
+      - name: Versión, etiqueta y CHANGELOG coherentes
+        id: meta
+        env:
+          TAG: ${{ github.ref_type == 'tag' && github.ref_name || '' }}
+        run: npx tsx scripts/release.ts check "$TAG"
+
+      - run: npm run lint
+      - run: npm run format:check
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run check:translations
+      - run: npm run build
+
+      - name: Tests de integración (VS Code real)
+        run: xvfb-run -a npm run test:integration
+
+      - name: Empaquetar .vsix
+        run: npm run package
+
+      - name: Construir la librería npm
+        run: |
+          npm run build:lib
+          npm run smoke:lib
+
+      - name: Notas de la versión
+        env:
+          VERSION: ${{ steps.meta.outputs.version }}
+        run: npx tsx scripts/release.ts notes "$VERSION" > release-notes.md
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: release-vsix
+          path: "*.vsix"
+          if-no-files-found: error
+      - uses: actions/upload-artifact@v4
+        with:
+          name: release-lib
+          path: dist-lib
+          if-no-files-found: error
+      - uses: actions/upload-artifact@v4
+        with:
+          name: release-notes
+          path: release-notes.md
+
+  github-release:
+    name: GitHub Release
+    needs: verify
+    if: github.ref_type == 'tag'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: release-vsix
+      - uses: actions/download-artifact@v4
+        with:
+          name: release-notes
+      - name: Crear el release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PRERELEASE: ${{ needs.verify.outputs.prerelease }}
+        run: |
+          flag=""
+          if [ "$PRERELEASE" = "true" ]; then flag="--prerelease"; fi
+          gh release create "$GITHUB_REF_NAME" ./*.vsix \
+            --repo "$GITHUB_REPOSITORY" \
+            --title "$GITHUB_REF_NAME" \
+            --notes-file release-notes.md $flag
+
+  # El Marketplace y Open VSX no aceptan versiones con sufijo (1.2.3-beta.1):
+  # las pre-releases solo van a npm (tag "next") y a GitHub.
+  publish-marketplace:
+    name: Visual Studio Marketplace
+    needs: verify
+    if: github.ref_type == 'tag' && needs.verify.outputs.prerelease == 'false'
+    runs-on: ubuntu-latest
+    environment: production
+    env:
+      VSCE_PAT: ${{ secrets.VSCE_PAT }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - uses: actions/download-artifact@v4
+        with:
+          name: release-vsix
+      - name: Publicar
+        run: |
+          if [ -z "$VSCE_PAT" ]; then
+            echo "::error::Falta el secreto VSCE_PAT; no se publicó en el Marketplace."
+            exit 1
+          fi
+          npx vsce publish --packagePath ./*.vsix
+
+  publish-openvsx:
+    name: Open VSX
+    needs: verify
+    if: github.ref_type == 'tag' && needs.verify.outputs.prerelease == 'false'
+    runs-on: ubuntu-latest
+    environment: production
+    env:
+      OVSX_PAT: ${{ secrets.OVSX_PAT }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - uses: actions/download-artifact@v4
+        with:
+          name: release-vsix
+      - name: Publicar
+        run: |
+          if [ -z "$OVSX_PAT" ]; then
+            echo "::error::Falta el secreto OVSX_PAT; no se publicó en Open VSX."
+            exit 1
+          fi
+          npx ovsx publish ./*.vsix -p "$OVSX_PAT"
+
+  publish-npm:
+    name: npm (lupa-a11y-core)
+    needs: verify
+    if: github.ref_type == 'tag'
+    runs-on: ubuntu-latest
+    environment: production
+    permissions:
+      contents: read
+      id-token: write # provenance
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org
+      - uses: actions/download-artifact@v4
+        with:
+          name: release-lib
+          path: dist-lib
+      - name: Publicar
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_TAG: ${{ needs.verify.outputs.npm_tag }}
+        run: |
+          if [ -z "$NODE_AUTH_TOKEN" ]; then
+            echo "::error::Falta el secreto NPM_TOKEN; no se publicó en npm."
+            exit 1
+          fi
+          npm publish ./dist-lib --provenance --access public --tag "$NPM_TAG"

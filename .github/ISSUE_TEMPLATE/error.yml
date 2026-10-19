@@ -1,0 +1,22 @@
+name: Error
+description: Algo no funciona como esperabas
+labels: [bug]
+body:
+  - type: textarea
+    id: que-pasa
+    attributes:
+      label: ¿Qué pasa?
+      description: Qué esperabas y qué ocurrió en su lugar.
+    validations:
+      required: true
+  - type: textarea
+    id: codigo
+    attributes:
+      label: Código para reproducirlo
+      description: El `.tsx` o `.jsx` mínimo donde ocurre.
+      render: tsx
+  - type: input
+    id: versiones
+    attributes:
+      label: Versiones
+      description: Lupa A11y, VS Code y sistema operativo.

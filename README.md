@@ -7,6 +7,9 @@
 
 # Lupa A11y
 
+[![CI](https://github.com/AnderCMD/Lupa-a11y/actions/workflows/ci.yml/badge.svg)](https://github.com/AnderCMD/Lupa-a11y/actions/workflows/ci.yml)
+[![Licencia: MIT](https://img.shields.io/badge/licencia-MIT-blue.svg)](LICENSE)
+
 **Linter de accesibilidad para React (JSX/TSX) con explicaciones en español.**
 
 Lupa A11y detecta problemas de accesibilidad mientras escribes y no se queda en "esto está mal": te explica **por qué importa**, **a quién afecta**, te muestra un ejemplo **mal vs. bien** y te dice qué criterio de [WCAG 2.2](https://www.w3.org/WAI/WCAG22/Understanding/) toca. Está pensada para quien está aprendiendo.
@@ -95,6 +98,10 @@ Quick fixes disponibles: `alt-text`, `click-events-have-key-events`, `no-static-
 - Los archivos con errores de sintaxis se ignoran en silencio hasta que se arreglan.
 - Solo `.jsx` y `.tsx` (y archivos que VS Code trate como React). El motor es ESLint 9 (el plugin aún no declara compatibilidad con ESLint 10).
 - Rendimiento medido solo en Node, no dentro de VS Code: ver [docs/rendimiento.md](docs/rendimiento.md).
+
+## Librería para tus propias herramientas
+
+El núcleo (traducciones, motor y quick fixes, sin VS Code) se publica en npm como [`lupa-a11y-core`](https://www.npmjs.com/package/lupa-a11y-core). Ejemplo de uso en su README.
 
 ## Hoja de ruta
 

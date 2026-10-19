@@ -1,25 +1,14 @@
 # Publicar Lupa A11y
 
-Estos pasos son para quien mantiene el proyecto. **No publiques sin una decisión explícita**: una versión publicada no se puede borrar del todo.
+La publicación es **automática** al subir una etiqueta `vX.Y.Z` desde `main`: ver [flujo-de-trabajo.md](flujo-de-trabajo.md) (pasos, secretos y protección de ramas).
 
-## Antes de publicar
+## Publicación manual (solo si la automática no está disponible)
 
-1. Actualiza `version` en `package.json` y mueve las entradas de "Sin publicar" en `CHANGELOG.md` a la nueva versión.
-2. Comprueba que `npm run lint`, `npm test`, `npm run check:translations` y `npm run test:integration` pasan.
-3. `npm run package` y revisa el `.vsix` (`npx vsce ls --no-dependencies`): debe incluir `dist/extension.js`, los iconos y `assets/brand/logo-mark.svg`.
-4. Instala el `.vsix` en tu VS Code (`code --install-extension lupa-a11y-<version>.vsix`) y pruébalo con un `.tsx` real.
+Haz esto únicamente en una emergencia, desde un commit de `main` ya validado. Una versión publicada no se puede borrar del todo.
 
-## Visual Studio Marketplace
-
-1. Crea un editor (publisher) en <https://marketplace.visualstudio.com/manage> con el mismo id que `publisher` en `package.json` (hoy `andercmd`).
-2. Crea un token de acceso personal en Azure DevOps con el ámbito **Marketplace → Manage**.
-3. `npx vsce login andercmd` y luego `npx vsce publish --no-dependencies`.
-
-## Open VSX
-
-1. Crea una cuenta en <https://open-vsx.org> y un token de acceso; crea el namespace con `npx ovsx create-namespace andercmd -p <token>`.
-2. `npx ovsx publish lupa-a11y-<version>.vsix -p <token>`.
-
-## Después
-
-Etiqueta la versión en git (`git tag v<version>`) y súbela. Los tokens nunca van al repositorio.
+1. `npm ci && npm run lint && npm test && npm run test:integration`.
+2. `npm run package` y revisa el `.vsix` con `npx vsce ls --no-dependencies`.
+3. Marketplace: `VSCE_PAT=… npx vsce publish --packagePath lupa-a11y-<versión>.vsix`.
+4. Open VSX: `npx ovsx publish lupa-a11y-<versión>.vsix -p <OVSX_PAT>`.
+5. npm: `npm run build:lib && npm publish ./dist-lib --access public` (con sesión iniciada en npm).
+6. `git tag v<versión> && git push origin v<versión>` solo si no se hizo antes (dispararía el workflow de release).

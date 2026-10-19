@@ -2,8 +2,16 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [main, dev]
   pull_request:
+    branches: [main, dev]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
 
 jobs:
   build:
@@ -23,6 +31,12 @@ jobs:
       - run: npm test
       - run: npm run check:translations
       - run: npm run build
+
+      - name: Librería npm (lupa-a11y-core)
+        run: |
+          npm run build:lib
+          npm run smoke:lib
+          npm pack ./dist-lib --dry-run
 
       - name: Cache VS Code para los tests de integración
         uses: actions/cache@v4

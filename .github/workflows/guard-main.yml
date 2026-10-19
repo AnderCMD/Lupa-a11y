@@ -1,0 +1,24 @@
+name: Guardia de main
+
+# `main` es producción: solo recibe PRs desde `dev` (o `hotfix/*` en emergencias).
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  origen-permitido:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Comprobar la rama de origen
+        env:
+          HEAD_REF: ${{ github.head_ref }}
+        run: |
+          if [ "$HEAD_REF" = "dev" ] || [[ "$HEAD_REF" == hotfix/* ]]; then
+            echo "Origen permitido: $HEAD_REF"
+          else
+            echo "::error::Los PR a main deben venir de 'dev' o 'hotfix/*' (esta viene de '$HEAD_REF')."
+            exit 1
+          fi

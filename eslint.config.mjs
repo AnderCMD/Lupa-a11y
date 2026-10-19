@@ -6,6 +6,7 @@ export default tseslint.config(
     ignores: [
       "dist/**",
       "dist-test/**",
+      "dist-lib/**",
       "node_modules/**",
       ".vscode-test/**",
       "test/fixtures/**",
@@ -14,7 +15,10 @@ export default tseslint.config(
   },
   js.configs.recommended,
   ...tseslint.configs.recommended,
-  { files: ["**/*.mjs"], languageOptions: { globals: { process: "readonly" } } },
+  {
+    files: ["**/*.mjs"],
+    languageOptions: { globals: { process: "readonly", console: "readonly" } },
+  },
   {
     rules: {
       "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
