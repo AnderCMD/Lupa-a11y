@@ -37,11 +37,11 @@ Qué hace [`release.yml`](../.github/workflows/release.yml) al ver la etiqueta:
 1. **Verifica**: la etiqueta está en `main`, coincide con `package.json`, el CHANGELOG tiene notas de esa versión, y pasan todos los checks, incluidos los tests en VS Code real.
 2. Construye el `.vsix` y la librería `lupa-a11y-core`.
 3. Crea el **GitHub Release** con el `.vsix` y las notas del CHANGELOG.
-4. Publica en **Visual Studio Marketplace**, **Open VSX** y **npm**. Estos tres jobs usan el _environment_ `production`, que puede exigir tu aprobación manual antes de publicar.
+4. Publica en **Visual Studio Marketplace** y **npm**. Estos dos jobs usan el _environment_ `production`, que puede exigir tu aprobación manual antes de publicar.
 
 Los jobs de publicación son independientes: si uno falla (por ejemplo, un token caducado), arregla el secreto y usa "Re-run failed jobs"; los demás no se repiten.
 
-**Pre-releases** (`v0.2.0-beta.1`): el Marketplace y Open VSX no admiten versiones con sufijo, así que solo van a GitHub (marcado como pre-release) y a npm con el tag `next`.
+**Pre-releases** (`v0.2.0-beta.1`): el Marketplace no admite versiones con sufijo, así que solo van a GitHub (marcado como pre-release) y a npm con el tag `next`.
 
 **Ensayo**: en la pestaña Actions, "Release" → _Run workflow_ construye todo sin publicar nada.
 
@@ -52,7 +52,6 @@ Los jobs de publicación son independientes: si uno falla (por ejemplo, un token
 | Secreto     | De dónde sale                                                                                                                                                                                                                                                   |
 | ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `VSCE_PAT`  | Token de Azure DevOps con el ámbito **Marketplace → Manage** (<https://dev.azure.com> → User settings → Personal access tokens, organización "All accessible organizations"). Antes crea el editor `andercmd` en <https://marketplace.visualstudio.com/manage>. |
-| `OVSX_PAT`  | Token de <https://open-vsx.org/user-settings/tokens>. Antes crea el namespace: `npx ovsx create-namespace andercmd -p <token>`.                                                                                                                                 |
 | `NPM_TOKEN` | Token **Automation** (o granular con permiso de publicación) de <https://www.npmjs.com/settings/~/tokens>.                                                                                                                                                      |
 
 Los tokens nunca van al repositorio. Si falta alguno, su job falla con un mensaje claro y no se publica en ese destino.
@@ -98,6 +97,8 @@ Si trabajas solo, `required_approving_review_count: 0` permite mezclar tu propio
 - Settings → General → _Default branch_: `main`; permitir solo _Merge commits_ para `dev → main` (conserva el historial).
 - Settings → Code security: activar Dependabot alerts, Dependabot security updates y Secret scanning. Dependabot ya abre PR a `dev` cada semana (`.github/dependabot.yml`).
 - Social preview: ver [CONTRIBUTING.md](../CONTRIBUTING.md#marca).
+
+> **Open VSX:** de momento no se publica ahí. Para añadirlo más adelante basta un job con `npx ovsx publish` y un secreto `OVSX_PAT` (token de <https://open-vsx.org/user-settings/tokens> y un namespace creado con `npx ovsx create-namespace`).
 
 ## Librería npm (`lupa-a11y-core`)
 

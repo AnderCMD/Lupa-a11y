@@ -109,7 +109,7 @@ jobs:
             --title "$GITHUB_REF_NAME" \
             --notes-file release-notes.md $flag
 
-  # El Marketplace y Open VSX no aceptan versiones con sufijo (1.2.3-beta.1):
+  # El Marketplace no acepta versiones con sufijo (1.2.3-beta.1):
   # las pre-releases solo van a npm (tag "next") y a GitHub.
   publish-marketplace:
     name: Visual Studio Marketplace
@@ -136,32 +136,6 @@ jobs:
             exit 1
           fi
           npx vsce publish --packagePath ./*.vsix
-
-  publish-openvsx:
-    name: Open VSX
-    needs: verify
-    if: github.ref_type == 'tag' && needs.verify.outputs.prerelease == 'false'
-    runs-on: ubuntu-latest
-    environment: production
-    env:
-      OVSX_PAT: ${{ secrets.OVSX_PAT }}
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: npm
-      - run: npm ci
-      - uses: actions/download-artifact@v4
-        with:
-          name: release-vsix
-      - name: Publicar
-        run: |
-          if [ -z "$OVSX_PAT" ]; then
-            echo "::error::Falta el secreto OVSX_PAT; no se publicó en Open VSX."
-            exit 1
-          fi
-          npx ovsx publish ./*.vsix -p "$OVSX_PAT"
 
   publish-npm:
     name: npm (lupa-a11y-core)

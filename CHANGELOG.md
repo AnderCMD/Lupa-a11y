@@ -20,4 +20,4 @@ El formato sigue [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y e
 - Logotipo e identidad visual (`assets/brand/`), generados con `npm run build:brand`.
 - Script `check-translations`, tests con Vitest, tests de integración con `@vscode/test-electron` y CI en GitHub Actions.
 - Librería `lupa-a11y-core` (traducciones, motor y quick fixes sin VS Code) para npm, con ESM, CJS y tipos.
-- Flujo de ramas `main` (producción) / `dev` (desarrollo) y release automático por etiqueta: GitHub Release, Marketplace, Open VSX y npm.
+- Flujo de ramas `main` (producción) / `dev` (desarrollo) y release automático por etiqueta: GitHub Release, Marketplace y npm.
