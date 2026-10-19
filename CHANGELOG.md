@@ -9,6 +9,7 @@ El formato sigue [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y e
 ### Cambiado
 
 - La publicación en el Marketplace y en npm es opcional (variables `PUBLISH_MARKETPLACE` y `PUBLISH_NPM`); por defecto el release solo crea el GitHub Release con el `.vsix`.
+- La publicación en npm usa trusted publishing (OIDC), sin token.
 
 ## [1.0.1] - 2026-10-19
 

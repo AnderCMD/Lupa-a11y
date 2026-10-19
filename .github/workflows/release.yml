@@ -145,6 +145,8 @@ jobs:
           fi
           npx vsce publish --packagePath ./*.vsix
 
+  # Usa "trusted publishing" de npm (OIDC): no hay token. Configuración en npmjs.com
+  # → lupa-a11y-core → Settings → Trusted Publisher (ver docs/flujo-de-trabajo.md).
   publish-npm:
     name: npm (lupa-a11y-core)
     needs: verify
@@ -153,19 +155,20 @@ jobs:
     environment: production
     permissions:
       contents: read
-      id-token: write # provenance
+      id-token: write # OIDC para trusted publishing y provenance
     steps:
       - uses: actions/setup-node@v7
         with:
           node-version: 22
           registry-url: https://registry.npmjs.org
+      - name: npm reciente (trusted publishing requiere npm 11.5.1 o superior)
+        run: npm install -g npm@latest
       - uses: actions/download-artifact@v8
         with:
           name: release-lib
           path: dist-lib
       - name: Publicar
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_TAG: ${{ needs.verify.outputs.npm_tag }}
         run: |
           version=$(node -p "require('./dist-lib/package.json').version")
@@ -173,8 +176,4 @@ jobs:
             echo "::notice::lupa-a11y-core@$version ya está publicada en npm; se omite."
             exit 0
           fi
-          if [ -z "$NODE_AUTH_TOKEN" ]; then
-            echo "::error::Falta el secreto NPM_TOKEN; no se publicó en npm."
-            exit 1
-          fi
-          npm publish ./dist-lib --provenance --access public --tag "$NPM_TAG"
+          npm publish ./dist-lib --access public --tag "$NPM_TAG"

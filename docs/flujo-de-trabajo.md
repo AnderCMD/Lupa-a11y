@@ -51,14 +51,27 @@ Los jobs de publicación son independientes: si uno falla (por ejemplo, un token
 
 ### Secretos (Settings → Secrets and variables → Actions)
 
-| Secreto     | De dónde sale                                                                                                                                                                                                                                                   |
-| ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `VSCE_PAT`  | Token de Azure DevOps con el ámbito **Marketplace → Manage** (<https://dev.azure.com> → User settings → Personal access tokens, organización "All accessible organizations"). Antes crea el editor `AnderCMD` en <https://marketplace.visualstudio.com/manage>. |
-| `NPM_TOKEN` | Token **Automation** (o granular con permiso de publicación) de <https://www.npmjs.com/settings/~/tokens>.                                                                                                                                                      |
+| Secreto    | De dónde sale                                                                                                                                                                                                                                                   |
+| ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `VSCE_PAT` | Token de Azure DevOps con el ámbito **Marketplace → Manage** (<https://dev.azure.com> → User settings → Personal access tokens, organización "All accessible organizations"). Antes crea el editor `AnderCMD` en <https://marketplace.visualstudio.com/manage>. |
 
 **Aviso sobre `VSCE_PAT`:** según la [documentación oficial](https://code.visualstudio.com/api/working-with-extensions/publishing-extension), los PAT globales de Azure DevOps se retiran el **1 de diciembre de 2026**. Hasta entonces el PAT funciona; después hay que pasar a Microsoft Entra ID (workload identity federation) con `vsce publish --azure-credential` y quitar el secreto.
 
 Los tokens nunca van al repositorio. Si falta alguno, su job falla con un mensaje claro y no se publica en ese destino.
+
+### npm: trusted publishing (sin token)
+
+npm confía en el workflow por OIDC, así que **no hay secreto `NPM_TOKEN`**. En <https://www.npmjs.com/package/lupa-a11y-core/access> → _Trusted Publisher_ → _GitHub Actions_:
+
+| Campo                | Valor                                   |
+| -------------------- | --------------------------------------- |
+| Organization or user | `AnderCMD`                              |
+| Repository           | `Lupa-a11y` (solo el nombre, no la URL) |
+| Workflow filename    | `release.yml`                           |
+| Environment name     | `production`                            |
+| Allow `npm publish`  | marcado                                 |
+
+Después crea la variable de repositorio `PUBLISH_NPM` con valor `true`. La configuración queda "pendiente de validación" hasta la primera publicación hecha por el workflow.
 
 ### Environment `production`
 
