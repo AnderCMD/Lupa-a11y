@@ -160,6 +160,11 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_TAG: ${{ needs.verify.outputs.npm_tag }}
         run: |
+          version=$(node -p "require('./dist-lib/package.json').version")
+          if npm view "lupa-a11y-core@$version" version >/dev/null 2>&1; then
+            echo "::notice::lupa-a11y-core@$version ya está publicada en npm; se omite."
+            exit 0
+          fi
           if [ -z "$NODE_AUTH_TOKEN" ]; then
             echo "::error::Falta el secreto NPM_TOKEN; no se publicó en npm."
             exit 1
