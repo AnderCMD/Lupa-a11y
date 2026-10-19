@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run format:check
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run check:translations
+      - run: npm run build
+
+      - name: Cache VS Code para los tests de integración
+        uses: actions/cache@v4
+        with:
+          path: .vscode-test
+          key: vscode-test-${{ runner.os }}-${{ hashFiles('package.json') }}
+
+      - name: Tests de integración (VS Code real)
+        run: xvfb-run -a npm run test:integration
+
+      - name: Empaquetar .vsix
+        run: npm run package
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: lupa-a11y-vsix
+          path: "*.vsix"
+          if-no-files-found: error

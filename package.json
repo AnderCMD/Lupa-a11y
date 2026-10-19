@@ -1,0 +1,167 @@
+{
+  "name": "lupa-a11y",
+  "displayName": "Lupa A11y",
+  "description": "Linter de accesibilidad para React (JSX/TSX) con explicaciones en español",
+  "version": "0.0.1",
+  "publisher": "andercmd",
+  "icon": "assets/brand/icon-256.png",
+  "galleryBanner": {
+    "color": "#0F172A",
+    "theme": "dark"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AnderCMD/Lupa-a11y.git"
+  },
+  "engines": {
+    "vscode": "^1.100.0"
+  },
+  "categories": [
+    "Linters",
+    "Programming Languages",
+    "Education"
+  ],
+  "keywords": [
+    "accesibilidad",
+    "a11y",
+    "jsx",
+    "react",
+    "español",
+    "wcag"
+  ],
+  "main": "./dist/extension.js",
+  "activationEvents": [
+    "onLanguage:javascriptreact",
+    "onLanguage:typescriptreact"
+  ],
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": "limited",
+      "description": "En un workspace no confiable no se carga la configuración de ESLint del proyecto (es código ejecutable): se usa el preset incluido.",
+      "restrictedConfigurations": [
+        "lupaA11y.useProjectEslintConfig"
+      ]
+    },
+    "virtualWorkspaces": {
+      "supported": "limited",
+      "description": "En espacios de trabajo virtuales no se carga la configuración de ESLint del proyecto; se usa el preset incluido."
+    }
+  },
+  "contributes": {
+    "commands": [
+      {
+        "command": "lupaA11y.toggle",
+        "title": "Alternar linting de accesibilidad",
+        "category": "Lupa A11y"
+      },
+      {
+        "command": "lupaA11y.showExplanation",
+        "title": "Ver explicación de la regla",
+        "category": "Lupa A11y"
+      }
+    ],
+    "configuration": {
+      "title": "Lupa A11y",
+      "properties": {
+        "lupaA11y.enable": {
+          "type": "boolean",
+          "default": true,
+          "description": "Activa o desactiva Lupa A11y."
+        },
+        "lupaA11y.severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning",
+            "information",
+            "hint"
+          ],
+          "default": "warning",
+          "description": "Severidad con la que se muestran los problemas de accesibilidad."
+        },
+        "lupaA11y.ignoreRules": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "description": "Reglas a ignorar, por ejemplo \"jsx-a11y/alt-text\"."
+        },
+        "lupaA11y.lintOn": {
+          "type": "string",
+          "enum": [
+            "type",
+            "save"
+          ],
+          "default": "type",
+          "description": "Cuándo analizar el archivo: mientras escribes o al guardar."
+        },
+        "lupaA11y.useProjectEslintConfig": {
+          "type": "boolean",
+          "default": true,
+          "description": "Usa la configuración de ESLint del proyecto (eslint.config.*) si existe; solo se consideran las reglas jsx-a11y/*. Si no existe, o el workspace no es de confianza, se usa el preset incluido."
+        },
+        "lupaA11y.criticalRulesAsError": {
+          "type": "boolean",
+          "default": false,
+          "description": "Muestra como Error las reglas críticas (alt-text, aria-role, aria-props), sin importar la severidad por defecto."
+        },
+        "lupaA11y.maxFileSizeKb": {
+          "type": "number",
+          "default": 500,
+          "minimum": 1,
+          "description": "Tamaño máximo (en KB) de los archivos que se analizan; los más grandes se omiten."
+        }
+      }
+    },
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "lupaA11y.showExplanation",
+          "when": "false"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "build": "node esbuild.mjs",
+    "watch": "node esbuild.mjs --watch",
+    "typecheck": "tsc --noEmit",
+    "build:brand": "tsx scripts/build-brand.ts",
+    "check:translations": "tsx scripts/check-translations.ts",
+    "bench": "tsx scripts/bench.ts",
+    "test": "vitest run",
+    "vscode:prepublish": "npm run typecheck && node esbuild.mjs --production",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "package": "vsce package --no-dependencies",
+    "build:tests": "node esbuild.mjs --tests",
+    "test:integration": "npm run build && npm run build:tests && tsx test/integration/runTest.ts"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.5",
+    "@fontsource/inter": "^5.3.0",
+    "@resvg/resvg-js": "^2.6.2",
+    "@types/node": "^22.0.0",
+    "@types/vscode": "1.100.0",
+    "@typescript-eslint/parser": "^8.71.2",
+    "@vscode/test-electron": "^3.1.0",
+    "@vscode/vsce": "^4.0.0",
+    "esbuild": "^0.28.2",
+    "eslint": "^9.39.5",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "opentype.js": "^2.0.0",
+    "prettier": "^3.9.10",
+    "svgo": "^4.1.0",
+    "tsx": "^4.23.15",
+    "typescript": "^5.9.0",
+    "typescript-eslint": "^8.71.2",
+    "vitest": "^5.0.5"
+  },
+  "bugs": {
+    "url": "https://github.com/AnderCMD/Lupa-a11y/issues"
+  },
+  "homepage": "https://github.com/AnderCMD/Lupa-a11y#readme"
+}
