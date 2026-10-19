@@ -24,7 +24,7 @@ let doc: vscode.TextDocument;
 test("activa la extensión al abrir un .tsx", async () => {
   doc = await vscode.workspace.openTextDocument({ language: "typescriptreact", content: CODE });
   await vscode.window.showTextDocument(doc);
-  const ext = vscode.extensions.getExtension("andercmd.lupa-a11y");
+  const ext = vscode.extensions.getExtension("AnderCMD.lupa-a11y");
   assert.ok(ext, "la extensión no está instalada");
   await until(() => (ext.isActive ? true : undefined), "activación");
 });
