@@ -4,9 +4,9 @@ import { getExplanation, isPending, listExplanations } from "../src/i18n";
 const all = listExplanations("es");
 
 describe("traducciones al español", () => {
-  it("cubre las 18 reglas de la v1 sin duplicados", () => {
-    expect(all).toHaveLength(18);
-    expect(new Set(all.map((t) => t.ruleId)).size).toBe(18);
+  it("no tiene reglas duplicadas y cubre las 18 de la v1", () => {
+    expect(new Set(all.map((t) => t.ruleId)).size).toBe(all.length);
+    expect(all.length).toBeGreaterThanOrEqual(18);
   });
 
   it.each(all.map((t) => [t.ruleId, t] as const))("%s está completa", (_id, t) => {
@@ -22,7 +22,7 @@ describe("traducciones al español", () => {
   });
 
   it("devuelve undefined para reglas sin traducción", () => {
-    expect(getExplanation("jsx-a11y/no-access-key")).toBeUndefined();
-    expect(isPending("jsx-a11y/no-access-key")).toBe(true);
+    expect(getExplanation("jsx-a11y/no-onchange")).toBeUndefined();
+    expect(isPending("jsx-a11y/no-onchange")).toBe(true);
   });
 });

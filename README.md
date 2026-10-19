@@ -34,7 +34,7 @@ Ya hay linters de accesibilidad muy buenos, pero están en inglés. Lupa A11y no
 Desde la línea de comandos, con el `.vsix` de la [última CI](../../actions) o generado por ti (`npm run package`):
 
 ```bash
-code --install-extension lupa-a11y-0.0.1.vsix
+code --install-extension lupa-a11y-0.1.0.vsix
 ```
 
 Requiere VS Code 1.100 o superior. Cuando se publique en el Marketplace bastará con buscar "Lupa A11y".
@@ -62,30 +62,49 @@ Comando de la paleta: **Lupa A11y: Alternar linting de accesibilidad**.
 
 **Configuración del proyecto.** Si existe `eslint.config.js|mjs|cjs` y el workspace es de confianza, se usan las reglas `jsx-a11y/*` que tú hayas configurado (las demás se ignoran). En un workspace no confiable no se ejecuta esa configuración —es código— y se usa el preset incluido. Si no se puede cargar, vuelve al preset y avisa una sola vez en el canal de salida "Lupa A11y". Las configuraciones en TypeScript (`eslint.config.ts`) no están soportadas.
 
-## Reglas cubiertas (18)
+## Reglas cubiertas (35)
 
-| Regla                            | Criterio WCAG 2.2              | Nivel          |
-| -------------------------------- | ------------------------------ | -------------- |
-| `alt-text`                       | 1.1.1 Contenido no textual     | A              |
-| `anchor-is-valid`                | 4.1.2 Nombre, función, valor   | A              |
-| `anchor-has-content`             | 2.4.4 Propósito de los enlaces | A              |
-| `click-events-have-key-events`   | 2.1.1 Teclado                  | A              |
-| `no-static-element-interactions` | 4.1.2 Nombre, función, valor   | A              |
-| `interactive-supports-focus`     | 2.1.1 Teclado                  | A              |
-| `label-has-associated-control`   | 1.3.1 Información y relaciones | A              |
-| `control-has-associated-label`   | 4.1.2 Nombre, función, valor   | A              |
-| `aria-props`                     | 4.1.2 Nombre, función, valor   | A              |
-| `aria-role`                      | 4.1.2 Nombre, función, valor   | A              |
-| `role-has-required-aria-props`   | 4.1.2 Nombre, función, valor   | A              |
-| `heading-has-content`            | 2.4.6 Encabezados y etiquetas  | AA             |
-| `html-has-lang`                  | 3.1.1 Idioma de la página      | A              |
-| `img-redundant-alt`              | 1.1.1 Contenido no textual     | Buena práctica |
-| `no-autofocus`                   | 2.4.3 Orden del foco           | Buena práctica |
-| `tabindex-no-positive`           | 2.4.3 Orden del foco           | A              |
-| `media-has-caption`              | 1.2.2 Subtítulos (grabados)    | A              |
-| `iframe-has-title`               | 4.1.2 Nombre, función, valor   | A              |
+| Regla                                           | Criterio WCAG 2.2                            | Nivel          |
+| ----------------------------------------------- | -------------------------------------------- | -------------- |
+| `alt-text`                                      | 1.1.1 Contenido no textual                   | A              |
+| `anchor-is-valid`                               | 4.1.2 Nombre, función, valor                 | A              |
+| `anchor-has-content`                            | 2.4.4 Propósito de los enlaces               | A              |
+| `click-events-have-key-events`                  | 2.1.1 Teclado                                | A              |
+| `no-static-element-interactions`                | 4.1.2 Nombre, función, valor                 | A              |
+| `interactive-supports-focus`                    | 2.1.1 Teclado                                | A              |
+| `label-has-associated-control`                  | 1.3.1 Información y relaciones               | A              |
+| `control-has-associated-label`                  | 4.1.2 Nombre, función, valor                 | A              |
+| `aria-props`                                    | 4.1.2 Nombre, función, valor                 | A              |
+| `aria-role`                                     | 4.1.2 Nombre, función, valor                 | A              |
+| `role-has-required-aria-props`                  | 4.1.2 Nombre, función, valor                 | A              |
+| `heading-has-content`                           | 2.4.6 Encabezados y etiquetas                | AA             |
+| `html-has-lang`                                 | 3.1.1 Idioma de la página                    | A              |
+| `img-redundant-alt`                             | 1.1.1 Contenido no textual                   | Buena práctica |
+| `no-autofocus`                                  | 2.4.3 Orden del foco                         | Buena práctica |
+| `tabindex-no-positive`                          | 2.4.3 Orden del foco                         | A              |
+| `media-has-caption`                             | 1.2.2 Subtítulos (grabados)                  | A              |
+| `iframe-has-title`                              | 4.1.2 Nombre, función, valor                 | A              |
+| `anchor-ambiguous-text`                         | 2.4.4 Propósito de los enlaces               | A              |
+| `aria-activedescendant-has-tabindex`            | 2.1.1 Teclado                                | A              |
+| `aria-proptypes`                                | 4.1.2 Nombre, función, valor                 | A              |
+| `aria-unsupported-elements`                     | 4.1.2 Nombre, función, valor                 | A              |
+| `autocomplete-valid`                            | 1.3.5 Identificar el propósito de la entrada | AA             |
+| `lang`                                          | 3.1.1 Idioma de la página                    | A              |
+| `mouse-events-have-key-events`                  | 2.1.1 Teclado                                | A              |
+| `no-access-key`                                 | 2.1.4 Atajos con teclado de caracteres       | Buena práctica |
+| `no-aria-hidden-on-focusable`                   | 4.1.2 Nombre, función, valor                 | A              |
+| `no-distracting-elements`                       | 2.2.2 Pausar, detener, ocultar               | A              |
+| `no-interactive-element-to-noninteractive-role` | 4.1.2 Nombre, función, valor                 | A              |
+| `no-noninteractive-element-interactions`        | 4.1.2 Nombre, función, valor                 | A              |
+| `no-noninteractive-element-to-interactive-role` | 4.1.2 Nombre, función, valor                 | A              |
+| `no-noninteractive-tabindex`                    | 2.4.3 Orden del foco                         | Buena práctica |
+| `no-redundant-roles`                            | 4.1.2 Nombre, función, valor                 | Buena práctica |
+| `role-supports-aria-props`                      | 4.1.2 Nombre, función, valor                 | A              |
+| `scope`                                         | 1.3.1 Información y relaciones               | A              |
 
-Las otras 21 reglas del plugin siguen activas con el mensaje original de ESLint y el sufijo "(sin traducir)"; [puedes ayudar a traducirlas](CONTRIBUTING.md).
+Las 4 reglas del plugin sin traducir no están en el preset: tres están obsoletas en el plugin (`accessible-emoji`, `label-has-for`, `no-onchange`) y `prefer-tag-over-role` es opinionada. El resto de reglas del plugin están traducidas.
+
+El preset parte de `recommended` de `eslint-plugin-jsx-a11y` y le añade `control-has-associated-label`, `anchor-ambiguous-text`, `lang` y `no-aria-hidden-on-focusable`, y entiende palabras en español en `img-redundant-alt` y `anchor-ambiguous-text`.
 
 Quick fixes disponibles: `alt-text`, `click-events-have-key-events`, `no-static-element-interactions`, `html-has-lang`, `img-redundant-alt`, `tabindex-no-positive` y `no-autofocus`.
 
@@ -105,7 +124,7 @@ El núcleo (traducciones, motor y quick fixes, sin VS Code) se publica en npm co
 
 ## Hoja de ruta
 
-Fuera de la v1: HTML, Vue, Svelte y Angular; contraste de color real; otros editores; otros idiomas (la estructura de `src/i18n/` ya está preparada, sin selector de idioma todavía); traducir las 21 reglas restantes del plugin.
+Fuera de la v1: HTML, Vue, Svelte y Angular; contraste de color real; otros editores; otros idiomas (la estructura de `src/i18n/` ya está preparada, sin selector de idioma todavía).
 
 ## Contribuir
 
