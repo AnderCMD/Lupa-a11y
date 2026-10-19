@@ -6,6 +6,8 @@ El formato sigue [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y e
 
 ## [Sin publicar]
 
+## [0.1.0] - 2026-10-19
+
 ### Añadido
 
 - Diagnósticos de accesibilidad en archivos `.jsx` y `.tsx` con mensajes en español, usando `eslint-plugin-jsx-a11y` como motor.
