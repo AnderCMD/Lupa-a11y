@@ -2,7 +2,7 @@
   "name": "lupa-a11y",
   "displayName": "Lupa A11y",
   "description": "Linter de accesibilidad para React (JSX/TSX) con explicaciones en español",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "publisher": "AnderCMD",
   "icon": "assets/brand/icon-256.png",
   "galleryBanner": {

@@ -18,7 +18,6 @@ El diseño es original, hecho a mano con formas geométricas simples (dos círcu
 | `icon-128.png`, `icon-256.png` | Icono de la extensión (`icon-256.png` es el que usa `package.json`) |
 | `social-preview-1280x640.png` | Imagen para compartir el repositorio |
 | `social-preview.svg` | Fuente de la imagen social |
-| `preview-sheet.png` | Hoja de prueba de legibilidad (no se versiona ni se publica) |
 
 Los PNG del README (`logo-horizontal-*.png`) existen porque el Marketplace de VS Code no admite SVG en el README.
 
@@ -60,14 +59,6 @@ El texto "Lupa A11y" usa **Inter Bold** (Rasmus Andersson y The Inter Project Au
 - **Espacio libre:** deja alrededor del logotipo al menos el ancho del anillo del cristal (≈ 1/10 de la altura del símbolo).
 - **Tamaño mínimo:** símbolo 16 px (usa `favicon.svg`); logotipo horizontal 96 px de ancho. A 16 px la figura interior se reduce a un punto y el reconocimiento recae en la lupa.
 - **No hacer:** cambiar los colores fuera de la paleta, estirar o girar el símbolo, añadir sombras o degradados, poner la variante clara sobre fondos oscuros (ni al revés), ni usar el cian sobre blanco.
-
-## Social preview de GitHub (paso manual)
-
-GitHub no permite subir esta imagen por API ni por commit:
-
-1. Abre el repositorio → **Settings** → **General**.
-2. Baja hasta **Social preview** y pulsa **Edit** → **Upload an image**.
-3. Elige `assets/brand/social-preview-1280x640.png`.
 
 ## Licencia
 

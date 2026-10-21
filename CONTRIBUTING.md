@@ -92,12 +92,6 @@ Regla de oro: **nunca inventar contenido que requiere criterio humano**. Un quic
 
 El logotipo se genera con `npm run build:brand` (no edites los PNG a mano). Detalles en [assets/brand/README.md](assets/brand/README.md).
 
-**Paso manual: imagen social del repositorio.** GitHub no permite subirla por API:
-
-1. Repositorio → **Settings** → **General**.
-2. Sección **Social preview** → **Edit** → **Upload an image**.
-3. Elige `assets/brand/social-preview-1280x640.png`.
-
 ## Publicar (solo mantenedores)
 
 Automático al etiquetar `vX.Y.Z` en `main`: ver [docs/flujo-de-trabajo.md](docs/flujo-de-trabajo.md).
