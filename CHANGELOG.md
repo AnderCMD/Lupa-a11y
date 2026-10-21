@@ -6,6 +6,8 @@ El formato sigue [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y e
 
 ## [Sin publicar]
 
+## [1.0.2] - 2026-10-21
+
 ### Añadido
 
 - Capturas de pantalla en el README, código de conducta y plantilla de propuestas.
