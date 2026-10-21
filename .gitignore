@@ -5,3 +5,4 @@ dist/
 assets/brand/preview-sheet.png
 dist-test/
 dist-lib/
+.DS_Store
