@@ -30,7 +30,19 @@ Ya hay linters de accesibilidad muy buenos, pero están en inglés. Lupa A11y no
 - Respeta tu configuración de ESLint si el proyecto tiene una, y [Workspace Trust](https://code.visualstudio.com/docs/editor/workspace-trust).
 - Sin telemetría y sin llamadas de red mientras la usas.
 
-> **Demo (GIF pendiente).** Guion para grabarlo (≈ 20 s, tema oscuro, fuente grande): 1) abre un `.tsx` vacío y escribe `<img src="/grafica.png" />`; 2) espera el subrayado y pasa el cursor para mostrar el hover; 3) clic en "Ver explicación" y deja ver el panel; 4) vuelve al código, pulsa `Ctrl+.` y elige "Marcar la imagen como decorativa"; 5) escribe `<div onClick={abrir}>Menú</div>` y aplica "Convertir en `<button>`".
+## Capturas
+
+**Hover** con la explicación al pasar el cursor sobre el subrayado:
+
+![Hover de Lupa A11y sobre un enlace ambiguo: mensajes, motivo y ejemplo mal y bien](docs/img/hover.png)
+
+**Quick fixes** con `Ctrl+.` (o ⌘+. en macOS), incluida la acción "Ver explicación":
+
+![Menú de Quick Fix con "Convertir en button", "Agregar role, tabIndex y onKeyDown" y "Ver explicación"](docs/img/quick-fix.png)
+
+**Panel de explicación** completo, con a quién afecta, ejemplos mal y bien y el criterio WCAG:
+
+![Panel "Ver explicación" de Lupa A11y junto al código](docs/img/panel.png)
 
 ## Instalación
 
@@ -119,7 +131,7 @@ El preset parte de `recommended` de `eslint-plugin-jsx-a11y` y le añade `contro
 
 Quick fixes disponibles: `alt-text`, `click-events-have-key-events`, `no-static-element-interactions`, `html-has-lang`, `img-redundant-alt`, `tabindex-no-positive` y `no-autofocus`.
 
-## Limitaciones (honestas)
+## Limitaciones
 
 - **El análisis estático no detecta todo.** Ve el código, no la página renderizada: no sabe si un texto alternativo es bueno, si los subtítulos son correctos ni si un componente propio renderiza HTML accesible.
 - **No sustituye probar con un lector de pantalla** ni con el teclado, ni una auditoría de accesibilidad.
@@ -133,13 +145,13 @@ Quick fixes disponibles: `alt-text`, `click-events-have-key-events`, `no-static-
 
 El núcleo (traducciones, motor y quick fixes, sin VS Code) se publica en npm como [`lupa-a11y-core`](https://www.npmjs.com/package/lupa-a11y-core) (`npm install lupa-a11y-core eslint`). Ejemplo de uso en su README.
 
-## Hoja de ruta
+## Ideas para colaborar
 
-Fuera de la v1: HTML, Vue, Svelte y Angular; contraste de color real; otros editores; otros idiomas (la estructura de `src/i18n/` ya está preparada, sin selector de idioma todavía).
+Todavía no cubierto: HTML, Vue, Svelte y Angular; contraste de color real; otros editores; otros idiomas (la estructura de `src/i18n/` ya está preparada, sin selector de idioma todavía).
 
 ## Contribuir
 
-Las traducciones por PR son bienvenidas. Mira [CONTRIBUTING.md](CONTRIBUTING.md) para la plantilla y la guía de estilo. Identidad visual: [assets/brand/README.md](assets/brand/README.md).
+Las contribuciones son bienvenidas: traducciones nuevas o mejores, quick fixes, correcciones y propuestas (puedes abrir un [issue](https://github.com/AnderCMD/Lupa-a11y/issues/new/choose)). Lee [CONTRIBUTING.md](CONTRIBUTING.md) para preparar el entorno, la plantilla y la guía de estilo, y el [código de conducta](CODE_OF_CONDUCT.md). Identidad visual: [assets/brand/README.md](assets/brand/README.md).
 
 ## Agradecimientos
 

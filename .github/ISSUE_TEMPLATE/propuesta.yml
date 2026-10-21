@@ -1,0 +1,17 @@
+name: Propuesta
+description: Una idea para mejorar Lupa A11y (regla, quick fix, ajuste…)
+labels: [enhancement]
+body:
+  - type: textarea
+    id: idea
+    attributes:
+      label: ¿Qué propones?
+      description: Describe la mejora y qué problema resuelve a quien usa la extensión.
+    validations:
+      required: true
+  - type: textarea
+    id: ejemplo
+    attributes:
+      label: Ejemplo de código
+      description: Si aplica, el `.tsx` o `.jsx` donde se vería la diferencia.
+      render: tsx
