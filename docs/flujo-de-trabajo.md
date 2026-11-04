@@ -41,7 +41,9 @@ Qué hace [`release.yml`](../.github/workflows/release.yml) al ver la etiqueta:
 
 **La publicación en registros es opcional.** Los jobs del Marketplace y de npm solo corren si en Settings → Secrets and variables → Actions → _Variables_ existen `PUBLISH_MARKETPLACE` y/o `PUBLISH_NPM` con valor `true`. Sin ellas, el release solo crea el GitHub Release con el `.vsix` adjunto, y puedes subir el `.vsix` a mano en <https://marketplace.visualstudio.com/manage> (_New extension_ → _Visual Studio Code_).
 
-Los jobs de publicación son independientes: si uno falla (por ejemplo, un token caducado), arregla el secreto y usa "Re-run failed jobs"; los demás no se repiten.
+El Marketplace usa _trusted publishing_ (OIDC, sin PAT): en <https://marketplace.visualstudio.com/manage/publishers/andercmd/trustedpublishing> crea una política con proveedor GitHub Actions, propietario `AnderCMD`, repositorio `Lupa-a11y`, workflow `release.yml` y entorno `production`.
+
+Los jobs de publicación son independientes: si uno falla (por ejemplo, una política de trusted publishing mal configurada), arréglala y usa "Re-run failed jobs"; los demás no se repiten.
 
 **Pre-releases** (`v0.2.0-beta.1`): el Marketplace no admite versiones con sufijo, así que solo van a GitHub (marcado como pre-release) y a npm con el tag `next`.
 

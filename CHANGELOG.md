@@ -6,6 +6,12 @@ El formato sigue [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y e
 
 ## [Sin publicar]
 
+## [1.0.3] - 2026-11-04
+
+### Cambiado
+
+- La publicación en el Marketplace usa trusted publishing (OIDC, `vsce publish --oidc`), sin `VSCE_PAT`.
+
 ## [1.0.2] - 2026-10-21
 
 ### Añadido

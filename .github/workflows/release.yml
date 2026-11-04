@@ -115,8 +115,7 @@ jobs:
             --notes-file release-notes.md $flag
 
   # La publicación en el Marketplace y en npm es opcional: solo corre si existen las
-  # variables del repositorio PUBLISH_MARKETPLACE / PUBLISH_NPM con valor "true" (y sus
-  # secretos). Sin ellas, el release solo crea el GitHub Release con el .vsix.
+  # variables del repositorio PUBLISH_MARKETPLACE / PUBLISH_NPM con valor "true". Sin ellas, el release solo crea el GitHub Release con el .vsix.
   # El Marketplace no acepta versiones con sufijo (1.2.3-beta.1):
   # las pre-releases solo van a npm (tag "next") y a GitHub.
   publish-marketplace:
@@ -125,25 +124,20 @@ jobs:
     if: github.ref_type == 'tag' && needs.verify.outputs.prerelease == 'false' && vars.PUBLISH_MARKETPLACE == 'true'
     runs-on: ubuntu-latest
     environment: production
-    env:
-      VSCE_PAT: ${{ secrets.VSCE_PAT }}
+    permissions:
+      contents: read
+      id-token: write # OIDC para trusted publishing del Marketplace (sin PAT)
     steps:
-      - uses: actions/checkout@v7
       - uses: actions/setup-node@v7
         with:
           node-version: 22
-          cache: npm
-      - run: npm ci
       - uses: actions/download-artifact@v8
         with:
           name: release-vsix
+      # Política en marketplace.visualstudio.com/manage → Trusted Publishing:
+      # AnderCMD/Lupa-a11y · release.yml · entorno production. vsce >= 4.1.0 para --oidc.
       - name: Publicar
-        run: |
-          if [ -z "$VSCE_PAT" ]; then
-            echo "::error::Falta el secreto VSCE_PAT; no se publicó en el Marketplace."
-            exit 1
-          fi
-          npx vsce publish --packagePath ./*.vsix
+        run: npx -y @vscode/vsce@4.1.0 publish --oidc --packagePath ./*.vsix
 
   # Usa "trusted publishing" de npm (OIDC): no hay token. Configuración en npmjs.com
   # → lupa-a11y-core → Settings → Trusted Publisher (ver docs/flujo-de-trabajo.md).
