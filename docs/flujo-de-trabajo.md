@@ -9,6 +9,23 @@
 
 `main` nunca recibe commits directos. La CI corre en ambas ramas y en todos los PR; el workflow "Guardia de main" rechaza PR a `main` que no vengan de `dev` o `hotfix/*`.
 
+## Reglas configuradas en GitHub
+
+Estado real del repositorio (Settings → Branches, Rules y Environments). Si cambias algo allí, actualiza esta tabla.
+
+| Dónde                    | Regla                                                                                                                                                 |
+| ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `main`                   | Solo por PR. Checks obligatorios: `build` (CI) y `origen-permitido` (Guardia de main).                                                                |
+| `main`                   | **La rama del PR debe estar al día con `main`** (_strict_). Si `main` avanzó, mezcla `main` en `dev` antes de mezclar el PR.                          |
+| `main`                   | Las reglas también aplican a administradores. Sin force push ni borrado. No hace falta aprobación de revisores.                                       |
+| `dev`                    | Protegida contra force push y borrado. Admite push directo y no exige checks: la CI corre igual en cada push, revísala antes de abrir el PR a `main`. |
+| Repositorio              | Se admiten merge commit, squash y rebase. **Para `dev` → `main` usa merge commit**, así `dev` y `main` no divergen.                                   |
+| Repositorio              | **Auto-merge desactivado**: el PR se mezcla a mano cuando la CI está en verde.                                                                        |
+| Repositorio              | Las ramas se borran al mezclar su PR; `dev` y `main` no, porque están protegidas.                                                                     |
+| Repositorio              | Ruleset "Copilot code review": Copilot revisa los PR automáticamente. Sus comentarios son sugerencias, no bloquean.                                   |
+| Environment `production` | Exige aprobación de un revisor y solo admite ramas o etiquetas permitidas. Los jobs del Marketplace y de npm esperan esa aprobación.                  |
+| Variables de Actions     | `PUBLISH_MARKETPLACE=true` y `PUBLISH_NPM=true`: cada etiqueta `vX.Y.Z` publica en ambos registros.                                                   |
+
 ## Día a día
 
 1. Crea una rama desde `dev`: `git switch dev && git pull && git switch -c feature/lo-que-sea`.
@@ -17,7 +34,9 @@
 
 ## Sacar una versión
 
-Todo el flujo es automático salvo tres pasos manuales (preparar, aprobar, etiquetar).
+Todo el flujo es automático salvo cuatro pasos manuales: preparar, mezclar el PR, etiquetar y aprobar el environment `production`.
+
+Elige la versión con [SemVer](https://semver.org/lang/es/): **parche** (`1.0.4`) para correcciones, **menor** (`1.1.0`) para funciones o reglas nuevas, **mayor** (`2.0.0`) si quitas ajustes o cambias el comportamiento por defecto de forma incompatible.
 
 ```bash
 # 1. En dev: sube la versión y cierra "Sin publicar" en el CHANGELOG
@@ -26,6 +45,9 @@ npm run release:prepare -- 0.1.0
 git commit -am "Versión 0.1.0" && git push
 
 # 2. PR de dev a main; cuando la CI esté en verde, mézclalo (merge commit)
+#    Si GitHub dice que la rama no está al día: git merge origin/main en dev y push
+gh pr create --base main --head dev --title "Versión 0.1.0"
+gh pr merge --merge   # cuando build y origen-permitido estén en verde
 
 # 3. Etiqueta el commit de main: esto dispara el release
 git switch main && git pull

@@ -13,8 +13,8 @@ body:
     id: codigo
     attributes:
       label: Código para reproducirlo
-      description: El `.tsx` o `.jsx` mínimo donde ocurre.
-      render: tsx
+      description: El archivo mínimo donde ocurre (`.tsx`, `.jsx`, `.vue`, `.svelte`, `.astro` o `.html`).
+      render: html
   - type: input
     id: versiones
     attributes:

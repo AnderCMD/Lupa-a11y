@@ -19,6 +19,7 @@ El formato sigue [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y e
 - Contador de problemas en la barra de estado, con el origen de las reglas (preset o config del proyecto).
 - Ajustes `lupaA11y.languages` y `lupaA11y.workspaceMaxFiles`.
 - CLI `lupa-a11y` (en `lupa-a11y-core`) para CI: salida en texto o JSON, `--max-warnings`, `--ignore-rule` y `--project-config`.
+- `CLAUDE.md` con las reglas del proyecto para agentes y las reglas de ramas de GitHub documentadas en `docs/flujo-de-trabajo.md`.
 - Benchmark por framework y [ADR 0001](docs/adr/0001-motor-en-javascript-no-rust-ni-go.md) con la evaluación de Rust y Go.
 
 ### Cambiado
