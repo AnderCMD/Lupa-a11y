@@ -28,11 +28,27 @@ async function main(): Promise<void> {
     platform: "node" as const,
     target: "node20",
     // Dependencias reales de la librería: no se empaquetan.
-    external: ["eslint", "eslint-plugin-jsx-a11y", "@typescript-eslint/parser", "jiti"],
+    external: [
+      "eslint",
+      "eslint-plugin-jsx-a11y",
+      "@typescript-eslint/parser",
+      "eslint-plugin-vuejs-accessibility",
+      "vue-eslint-parser",
+      "@html-eslint/eslint-plugin",
+      "globals",
+      "jiti",
+    ],
     logLevel: "warning" as const,
   };
   await build({ ...common, format: "cjs", outfile: join(out, "index.cjs") });
   await build({ ...common, format: "esm", outfile: join(out, "index.mjs") });
+  await build({
+    ...common,
+    entryPoints: [join(root, "src/bin.ts")],
+    format: "cjs",
+    outfile: join(out, "cli.cjs"),
+    banner: { js: "#!/usr/bin/env node" },
+  });
 
   execFileSync(
     process.execPath,
@@ -45,16 +61,17 @@ async function main(): Promise<void> {
     name: "lupa-a11y-core",
     version: pkg.version,
     description:
-      "Núcleo de Lupa A11y: linter de accesibilidad para JSX/TSX con explicaciones en español (sin dependencias de VS Code)",
+      "Núcleo y CLI de Lupa A11y: linter de accesibilidad para React, Vue, Svelte, Astro, Angular y HTML con explicaciones en español (sin dependencias de VS Code)",
     license: pkg.license,
     author: "AnderCMD",
     repository: { type: "git", url: "git+https://github.com/AnderCMD/Lupa-a11y.git" },
     bugs: { url: "https://github.com/AnderCMD/Lupa-a11y/issues" },
     homepage: "https://github.com/AnderCMD/Lupa-a11y#readme",
-    keywords: [...pkg.keywords, "eslint", "wcag", "jsx-a11y"],
+    keywords: [...pkg.keywords, "eslint", "jsx-a11y", "cli"],
     main: "./index.cjs",
     module: "./index.mjs",
     types: "./types/lib.d.ts",
+    bin: { "lupa-a11y": "./cli.cjs" },
     exports: {
       ".": {
         types: "./types/lib.d.ts",
@@ -63,12 +80,17 @@ async function main(): Promise<void> {
       },
       "./package.json": "./package.json",
     },
-    files: ["index.cjs", "index.mjs", "types", "README.md", "LICENSE"],
+    files: ["index.cjs", "index.mjs", "cli.cjs", "types", "README.md", "LICENSE"],
     engines: { node: ">=20" },
     sideEffects: false,
     dependencies: {
       "@typescript-eslint/parser": dep("@typescript-eslint/parser"),
       "eslint-plugin-jsx-a11y": dep("eslint-plugin-jsx-a11y"),
+      "eslint-plugin-vuejs-accessibility": dep("eslint-plugin-vuejs-accessibility"),
+      "vue-eslint-parser": dep("vue-eslint-parser"),
+      "@html-eslint/eslint-plugin": dep("@html-eslint/eslint-plugin"),
+      // Peer de vuejs-accessibility (lo carga su config flat al importarse).
+      globals: dep("globals"),
     },
     peerDependencies: { eslint: "^9.0.0" },
   };

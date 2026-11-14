@@ -6,3 +6,14 @@ assets/brand/preview-sheet.png
 dist-test/
 dist-lib/
 .DS_Store
+
+# graphify: se versionan graph.json, graph.html y GRAPH_REPORT.md; no la caché ni los temporales.
+graphify-out/cache/
+graphify-out/.graphify_*
+graphify-out/.needs_update
+graphify-out/cost.json
+graphify-out/manifest.json
+
+# Salidas de la CLI y cobertura.
+a11y.json
+coverage/
