@@ -3,6 +3,9 @@ import { altTextFixes } from "./altText";
 import { clickEventsFixes } from "./clickEvents";
 import { htmlHasLangFixes } from "./htmlHasLang";
 import { imgRedundantAltFixes } from "./imgRedundantAlt";
+import { markupFixes } from "./markup";
+import { canonicalRuleId } from "../i18n/aliases";
+import type { Flavor } from "../linter/flavors";
 import { noAutofocusFixes } from "./noAutofocus";
 import { tabindexNoPositiveFixes } from "./tabindexNoPositive";
 import type { FixEdit, FixSuggestion } from "./types";
@@ -12,8 +15,15 @@ export type { FixEdit, FixSuggestion } from "./types";
 /**
  * Quick fixes seguros para el diagnóstico de `ruleId` que empieza en `offset`.
  * Regla de oro: nunca inventar contenido que requiere criterio humano.
+ * `flavor` indica la sintaxis del archivo (por defecto JSX).
  */
-export function getFixes(ruleId: string, text: string, offset: number): FixSuggestion[] {
+export function getFixes(
+  ruleId: string,
+  text: string,
+  offset: number,
+  flavor: Flavor = "jsx",
+): FixSuggestion[] {
+  if (flavor !== "jsx") return markupFixes(canonicalRuleId(ruleId), text, offset);
   const root = parseJsx(text);
   const target = root && findTarget(root, offset);
   if (!target) return [];

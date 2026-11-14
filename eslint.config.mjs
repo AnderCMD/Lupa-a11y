@@ -11,13 +11,15 @@ export default tseslint.config(
       ".vscode-test/**",
       "test/fixtures/**",
       "assets/**",
+      "graphify-out/**",
+      "coverage/**",
     ],
   },
   js.configs.recommended,
   ...tseslint.configs.recommended,
   {
     files: ["**/*.mjs"],
-    languageOptions: { globals: { process: "readonly", console: "readonly" } },
+    languageOptions: { globals: { process: "readonly", console: "readonly", URL: "readonly" } },
   },
   {
     rules: {

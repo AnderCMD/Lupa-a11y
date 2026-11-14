@@ -43,6 +43,14 @@ Sin configurar nada, `@vscode/test-electron` descarga una copia de VS Code. Si p
 5. Si la regla tiene configuración que no entiende el español (como `img-redundant-alt`), ajústala en `src/linter/runEslint.ts`.
 6. Ejecuta `npm test` y `npm run check:translations`.
 
+### Reglas de Vue y HTML (Svelte, Astro, Angular)
+
+- Si la regla equivale a una que ya tiene explicación (por ejemplo, `vuejs-accessibility/alt-text` → `jsx-a11y/alt-text`), no escribas otra: añade el alias en [`src/i18n/aliases.ts`](src/i18n/aliases.ts).
+- Si no, crea su explicación igual que arriba, con el `ruleId` real (`@html-eslint/...` o `vuejs-accessibility/...`) y ejemplos en HTML.
+- Las reglas de `@html-eslint` que se activan están en `HTML_A11Y_RULES` de [`src/linter/flavors.ts`](src/linter/flavors.ts).
+- Añade un caso malo/bueno en [`test/frameworks.test.ts`](test/frameworks.test.ts); un test comprueba que ninguna regla ni alias se queda sin caso.
+- Si tocas la normalización de plantillas ([`src/linter/templates.ts`](src/linter/templates.ts)), recuerda que **no puede cambiar la longitud ni los saltos de línea**: las posiciones de los diagnósticos dependen de ello.
+
 Verifica el criterio WCAG contra la [documentación oficial de WCAG 2.2](https://www.w3.org/WAI/WCAG22/Understanding/) antes de fijarlo; no copies el del plugin sin comprobarlo.
 
 ### Plantilla
@@ -82,7 +90,11 @@ export const nombreDeLaRegla: RuleExplanation = {
 
 ## Quick fixes
 
-Regla de oro: **nunca inventar contenido que requiere criterio humano**. Un quick fix puede mover, quitar o añadir atributos deterministas, pero no escribir descripciones ni textos visibles por su cuenta. Los fixes son funciones puras en `src/fixes/` (sin `vscode`); sus tests aplican el fix y vuelven a analizar el resultado para comprobar que el problema desaparece.
+Regla de oro: **nunca inventar contenido que requiere criterio humano**. Un quick fix puede mover, quitar o añadir atributos deterministas, pero no escribir descripciones ni textos visibles por su cuenta. Los fixes son funciones puras en `src/fixes/` (sin `vscode`); sus tests aplican el fix y vuelven a analizar el resultado para comprobar que el problema desaparece. Los de JSX trabajan sobre el AST; los de Vue/HTML/Svelte/Astro, sobre la etiqueta de apertura ([`src/fixes/markup.ts`](src/fixes/markup.ts)) y se prueban en `test/markupFixes.test.ts`.
+
+## Arquitectura en una frase
+
+`flavors.ts` decide la familia por idioma o extensión → `templates.ts` normaliza Svelte/Astro/Angular → `runEslint.ts` ejecuta el preset (o `projectEslint.ts` la config del proyecto) → `mapDiagnostics.ts` traduce con `i18n/` (resolviendo alias) → la extensión (`extension.ts`) o la CLI (`cli.ts`) lo muestran. Por qué el motor sigue en JavaScript: [ADR 0001](docs/adr/0001-motor-en-javascript-no-rust-ni-go.md).
 
 ## Idiomas
 

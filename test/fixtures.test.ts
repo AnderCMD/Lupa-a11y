@@ -5,7 +5,7 @@ import { getExplanation, listExplanations } from "../src/i18n";
 import { mapMessages } from "../src/linter/mapDiagnostics";
 import { runEslint } from "../src/linter/runEslint";
 
-// Cada carpeta de test/fixtures es una regla traducida (ver también i18n.test.ts).
+// Cada carpeta de test/fixtures es una regla jsx-a11y traducida (Vue y HTML: frameworks.test.ts).
 const RULES = readdirSync(join(__dirname, "fixtures")).sort();
 
 function lintFixture(rule: string, name: "malo" | "bueno") {
@@ -31,6 +31,7 @@ describe.each(RULES)("fixtures de %s", (rule) => {
 describe("cobertura de fixtures", () => {
   it("hay fixtures para todas las reglas traducidas y solo para ellas", () => {
     const translated = listExplanations("es")
+      .filter((t) => t.ruleId.startsWith("jsx-a11y/"))
       .map((t) => t.ruleId.replace("jsx-a11y/", ""))
       .sort();
     expect(RULES).toEqual(translated);

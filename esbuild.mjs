@@ -1,4 +1,5 @@
 import { build, context } from "esbuild";
+import { sharedBundleOptions } from "./scripts/esbuild-shared.mjs";
 
 const production = process.argv.includes("--production");
 const watch = process.argv.includes("--watch");
@@ -6,6 +7,7 @@ const tests = process.argv.includes("--tests");
 
 /** @type {import("esbuild").BuildOptions} */
 const options = {
+  ...sharedBundleOptions,
   entryPoints: ["src/extension.ts"],
   bundle: true,
   outfile: "dist/extension.js",

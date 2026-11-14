@@ -1,4 +1,5 @@
 import * as vscode from "vscode";
+import { SUPPORTED_LANGUAGES } from "./linter/flavors";
 
 export interface LupaConfig {
   enable: boolean;
@@ -8,6 +9,10 @@ export interface LupaConfig {
   lintOn: "type" | "save";
   useProjectEslintConfig: boolean;
   maxFileSizeKb: number;
+  /** Idiomas de VS Code que se analizan. */
+  languages: ReadonlySet<string>;
+  /** Límite de archivos del comando "Analizar el workspace". */
+  workspaceMaxFiles: number;
 }
 
 const SEVERITIES: Record<string, vscode.DiagnosticSeverity> = {
@@ -27,5 +32,7 @@ export function readConfig(scope?: vscode.Uri): LupaConfig {
     lintOn: c.get<"type" | "save">("lintOn", "type"),
     useProjectEslintConfig: c.get<boolean>("useProjectEslintConfig", true),
     maxFileSizeKb: c.get<number>("maxFileSizeKb", 500),
+    languages: new Set(c.get<string[]>("languages", [...SUPPORTED_LANGUAGES])),
+    workspaceMaxFiles: c.get<number>("workspaceMaxFiles", 2000),
   };
 }

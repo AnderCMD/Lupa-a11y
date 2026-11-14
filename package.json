@@ -1,7 +1,7 @@
 {
   "name": "lupa-a11y",
   "displayName": "Lupa A11y",
-  "description": "Linter de accesibilidad para React (JSX/TSX) con explicaciones en español",
+  "description": "Linter de accesibilidad con explicaciones en español para React, Next.js, Vue, Svelte, Astro, Angular, Solid, Preact y HTML",
   "version": "1.0.3",
   "publisher": "AnderCMD",
   "icon": "assets/brand/icon-256.png",
@@ -27,13 +27,24 @@
     "a11y",
     "jsx",
     "react",
+    "vue",
+    "svelte",
+    "astro",
+    "angular",
+    "html",
     "español",
     "wcag"
   ],
   "main": "./dist/extension.js",
   "activationEvents": [
     "onLanguage:javascriptreact",
-    "onLanguage:typescriptreact"
+    "onLanguage:typescriptreact",
+    "onLanguage:javascript",
+    "onLanguage:vue",
+    "onLanguage:svelte",
+    "onLanguage:astro",
+    "onLanguage:html",
+    "onLanguage:angular-html"
   ],
   "capabilities": {
     "untrustedWorkspaces": {
@@ -58,6 +69,21 @@
       {
         "command": "lupaA11y.showExplanation",
         "title": "Ver explicación de la regla",
+        "category": "Lupa A11y"
+      },
+      {
+        "command": "lupaA11y.analyzeWorkspace",
+        "title": "Analizar todo el workspace",
+        "category": "Lupa A11y"
+      },
+      {
+        "command": "lupaA11y.clearWorkspaceResults",
+        "title": "Limpiar resultados del análisis del workspace",
+        "category": "Lupa A11y"
+      },
+      {
+        "command": "lupaA11y.ignoreRule",
+        "title": "Ignorar regla en este workspace",
         "category": "Lupa A11y"
       }
     ],
@@ -86,7 +112,7 @@
             "type": "string"
           },
           "default": [],
-          "description": "Reglas a ignorar, por ejemplo \"jsx-a11y/alt-text\"."
+          "description": "Reglas a ignorar, por ejemplo \"jsx-a11y/alt-text\". Un id de jsx-a11y también ignora su equivalente en Vue y HTML (p. ej. \"vuejs-accessibility/alt-text\")."
         },
         "lupaA11y.lintOn": {
           "type": "string",
@@ -100,7 +126,7 @@
         "lupaA11y.useProjectEslintConfig": {
           "type": "boolean",
           "default": true,
-          "description": "Usa la configuración de ESLint del proyecto (eslint.config.*) si existe; solo se consideran las reglas jsx-a11y/*. Si no existe, o el workspace no es de confianza, se usa el preset incluido."
+          "description": "Usa la configuración de ESLint del proyecto (eslint.config.*) si existe y configura reglas de accesibilidad para ese tipo de archivo (jsx-a11y, vuejs-accessibility o @html-eslint); solo se muestran esas reglas. Si no, o si el workspace no es de confianza, se usa el preset incluido."
         },
         "lupaA11y.criticalRulesAsError": {
           "type": "boolean",
@@ -112,6 +138,39 @@
           "default": 500,
           "minimum": 1,
           "description": "Tamaño máximo (en KB) de los archivos que se analizan; los más grandes se omiten."
+        },
+        "lupaA11y.languages": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "javascriptreact",
+              "typescriptreact",
+              "javascript",
+              "vue",
+              "svelte",
+              "astro",
+              "html",
+              "angular-html"
+            ]
+          },
+          "default": [
+            "javascriptreact",
+            "typescriptreact",
+            "javascript",
+            "vue",
+            "svelte",
+            "astro",
+            "html",
+            "angular-html"
+          ],
+          "description": "Idiomas del editor que se analizan. Quita \"javascript\" si no usas JSX en archivos .js, o \"html\" si no quieres analizar HTML."
+        },
+        "lupaA11y.workspaceMaxFiles": {
+          "type": "number",
+          "default": 2000,
+          "minimum": 1,
+          "description": "Máximo de archivos que analiza el comando \"Analizar todo el workspace\"."
         }
       }
     },
@@ -119,6 +178,10 @@
       "commandPalette": [
         {
           "command": "lupaA11y.showExplanation",
+          "when": "false"
+        },
+        {
+          "command": "lupaA11y.ignoreRule",
           "when": "false"
         }
       ]
@@ -142,11 +205,13 @@
     "build:lib": "tsx scripts/build-lib.ts",
     "smoke:lib": "node scripts/smoke-lib.mjs",
     "release:check": "tsx scripts/release.ts check",
-    "release:prepare": "tsx scripts/release.ts prepare"
+    "release:prepare": "tsx scripts/release.ts prepare",
+    "a11y": "tsx src/bin.ts"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.5",
     "@fontsource/inter": "^5.3.0",
+    "@html-eslint/eslint-plugin": "^0.68.0",
     "@resvg/resvg-js": "^2.6.2",
     "@types/node": "^22.0.0",
     "@types/vscode": "1.100.0",
@@ -156,13 +221,16 @@
     "esbuild": "^0.28.2",
     "eslint": "^9.39.5",
     "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-vuejs-accessibility": "^2.6.3",
+    "globals": "^17.14.0",
     "opentype.js": "^2.0.0",
     "prettier": "^3.9.10",
     "svgo": "^4.1.0",
     "tsx": "^4.23.15",
     "typescript": "^5.9.0",
     "typescript-eslint": "^8.71.2",
-    "vitest": "^5.0.5"
+    "vitest": "^5.0.5",
+    "vue-eslint-parser": "^10.4.2"
   },
   "bugs": {
     "url": "https://github.com/AnderCMD/Lupa-a11y/issues"

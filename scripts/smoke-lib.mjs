@@ -20,3 +20,27 @@ for (const [name, lib] of [
   assert.ok(lib.listExplanations("es").length >= 18);
   console.log(`  ✓ ${name}`);
 }
+
+// Vue, HTML y la CLI.
+for (const [name, lib] of [
+  ["ESM", esm],
+  ["CJS", cjs],
+]) {
+  const vue = lib.runEslint(`<template><img src="a.png"></template>`, "A.vue");
+  assert.equal(vue[0]?.ruleId, "vuejs-accessibility/alt-text", `${name}: Vue`);
+  const html = lib.runEslint(`<img src="a.png">`, "a.html");
+  assert.equal(html[0]?.ruleId, "@html-eslint/require-img-alt", `${name}: HTML`);
+  console.log(`  ✓ ${name} (Vue y HTML)`);
+}
+
+const { execFileSync } = await import("node:child_process");
+const { fileURLToPath } = await import("node:url");
+const help = execFileSync(
+  process.execPath,
+  [fileURLToPath(new URL("../dist-lib/cli.cjs", import.meta.url)), "--help"],
+  {
+    encoding: "utf8",
+  },
+);
+assert.match(help, /Uso: lupa-a11y/);
+console.log("  ✓ CLI");

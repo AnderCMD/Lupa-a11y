@@ -14,7 +14,17 @@ export interface Target {
   attr?: Node;
 }
 
+/** Último AST: VS Code pide code actions muchas veces sobre el mismo texto. */
+let lastParse: { text: string; root: Node | undefined } | undefined;
+
 export function parseJsx(text: string): Node | undefined {
+  if (lastParse?.text === text) return lastParse.root;
+  const root = parseUncached(text);
+  lastParse = { text, root };
+  return root;
+}
+
+function parseUncached(text: string): Node | undefined {
   try {
     return parse(text, {
       ecmaFeatures: { jsx: true },

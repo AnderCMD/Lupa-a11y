@@ -33,10 +33,20 @@ import { noNoninteractiveTabindex } from "./es/no-noninteractive-tabindex";
 import { noRedundantRoles } from "./es/no-redundant-roles";
 import { roleSupportsAriaProps } from "./es/role-supports-aria-props";
 import { scope } from "./es/scope";
+import { formControlHasLabel } from "./es/form-control-has-label";
+import { noAbstractRoles } from "./es/no-abstract-roles";
+import { noAriaHiddenBody } from "./es/no-aria-hidden-body";
+import { noHeadingInsideButton } from "./es/no-heading-inside-button";
+import { noNonScalableViewport } from "./es/no-non-scalable-viewport";
+import { noRolePresentationOnFocusable } from "./es/no-role-presentation-on-focusable";
+import { noSkipHeadingLevels } from "./es/no-skip-heading-levels";
+import { requireTitle } from "./es/require-title";
+import { canonicalRuleId } from "./aliases";
 import { PENDING_RULES } from "./pending";
 import type { RuleExplanation } from "./types";
 
 export type { RuleExplanation } from "./types";
+export { ALIASES, canonicalRuleId } from "./aliases";
 
 /**
  * Registro por idioma. Para añadir un idioma: crear `src/i18n/<idioma>/`
@@ -79,6 +89,15 @@ const registry: Record<string, readonly RuleExplanation[]> = {
     noRedundantRoles,
     roleSupportsAriaProps,
     scope,
+    // Reglas propias de Vue y de HTML (Svelte, Astro, Angular…).
+    formControlHasLabel,
+    noRolePresentationOnFocusable,
+    noSkipHeadingLevels,
+    noNonScalableViewport,
+    noAriaHiddenBody,
+    noHeadingInsideButton,
+    noAbstractRoles,
+    requireTitle,
   ],
 };
 
@@ -92,7 +111,8 @@ export function getExplanation(
   ruleId: string,
   locale: string = DEFAULT_LOCALE,
 ): RuleExplanation | undefined {
-  return listExplanations(locale).find((r) => r.ruleId === ruleId);
+  const id = canonicalRuleId(ruleId);
+  return listExplanations(locale).find((r) => r.ruleId === id);
 }
 
 /** Reglas de jsx-a11y que aún no tienen traducción (usan el mensaje original). */
@@ -100,7 +120,12 @@ export function isPending(ruleId: string): boolean {
   return PENDING_RULES.includes(ruleId);
 }
 
+/** Documentación oficial de la regla (en inglés), según su plugin. */
 export function docsUrlFor(ruleId: string): string {
-  const name = ruleId.replace(/^jsx-a11y\//, "");
+  const name = ruleId.slice(ruleId.lastIndexOf("/") + 1);
+  if (ruleId.startsWith("vuejs-accessibility/")) {
+    return `https://vue-a11y.github.io/eslint-plugin-vuejs-accessibility/rules/${name}.html`;
+  }
+  if (ruleId.startsWith("@html-eslint/")) return `https://html-eslint.org/docs/rules/${name}`;
   return `https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/main/docs/rules/${name}.md`;
 }
