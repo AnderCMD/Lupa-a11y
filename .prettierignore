@@ -7,3 +7,5 @@ assets/
 *.vsix
 package-lock.json
 dist-lib/
+graphify-out/
+coverage/

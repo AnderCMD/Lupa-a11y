@@ -6,6 +6,25 @@ El formato sigue [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y e
 
 ## [Sin publicar]
 
+### Añadido
+
+- Soporte para **Vue** (`.vue`, con `eslint-plugin-vuejs-accessibility`), **Svelte**, **Astro**, **plantillas de Angular** y **HTML** (con `@html-eslint`), además de `.js` con JSX (Next.js, Preact, Solid, Qwik…).
+- Normalización de plantillas de Svelte, Astro y Angular sin mover posiciones: `alt={expr}`, atajo `{alt}`, bloques `{#if}`, frontmatter, `[alt]`, `[attr.aria-label]` y `bind-alt`.
+- 8 explicaciones nuevas en español (campo sin etiqueta, salto de niveles de encabezado, zoom bloqueado, `<title>` de la página, role abstracto, encabezado dentro de un botón, `aria-hidden` en `<body>` y `role="presentation"` en elementos enfocables) y 30 reglas de Vue y HTML que reutilizan las explicaciones de JSX.
+- Quick fixes para Vue, Svelte, Astro y HTML: imagen sin alt, `<html>` sin `lang`, `tabindex` positivo y `autofocus`.
+- Comandos **Analizar todo el workspace** y **Limpiar resultados del análisis del workspace**.
+- Quick fix **Ignorar <regla> en este workspace**.
+- Contador de problemas en la barra de estado, con el origen de las reglas (preset o config del proyecto).
+- Ajustes `lupaA11y.languages` y `lupaA11y.workspaceMaxFiles`.
+- CLI `lupa-a11y` (en `lupa-a11y-core`) para CI: salida en texto o JSON, `--max-warnings`, `--ignore-rule` y `--project-config`.
+- Benchmark por framework y [ADR 0001](docs/adr/0001-motor-en-javascript-no-rust-ni-go.md) con la evaluación de Rust y Go.
+
+### Cambiado
+
+- Si el `eslint.config.*` del proyecto no configura reglas de accesibilidad para un tipo de archivo, se usa el preset incluido en lugar de no mostrar nada.
+- `lupaA11y.ignoreRules` con un id de `jsx-a11y/*` también ignora sus equivalentes de Vue y HTML.
+- Se reutiliza el último resultado si el texto no cambió, y el último AST para los quick fixes.
+
 ## [1.0.3] - 2026-11-04
 
 ### Cambiado

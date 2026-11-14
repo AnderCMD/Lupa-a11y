@@ -76,6 +76,44 @@ test("ofrece un quick fix que resuelve el problema", async () => {
   );
 });
 
+test("analiza HTML (plantillas de Angular, Alpine…) con el preset de HTML", async () => {
+  const html = await vscode.workspace.openTextDocument({
+    language: "html",
+    content: `<div><img [src]="url"></div>\n`,
+  });
+  await vscode.window.showTextDocument(html);
+  const [d] = await until(() => {
+    const found = lupaDiagnostics(html.uri);
+    return found.length ? found : undefined;
+  }, "diagnóstico en HTML");
+  assert.ok(d);
+  assert.strictEqual(
+    typeof d.code === "object" ? d.code.value : d.code,
+    "@html-eslint/require-img-alt",
+  );
+  assert.match(d.message, /atributo alt/);
+  const actions = await vscode.commands.executeCommand<vscode.CodeAction[]>(
+    "vscode.executeCodeActionProvider",
+    html.uri,
+    d.range,
+    vscode.CodeActionKind.QuickFix.value,
+  );
+  const titles = actions.map((a) => a.title);
+  assert.ok(titles.includes('Marcar la imagen como decorativa (alt="")'), titles.join(" | "));
+  assert.ok(titles.includes("Ignorar @html-eslint/require-img-alt en este workspace"));
+});
+
+test("registra los comandos nuevos", async () => {
+  const commands = await vscode.commands.getCommands(true);
+  for (const c of [
+    "lupaA11y.analyzeWorkspace",
+    "lupaA11y.clearWorkspaceResults",
+    "lupaA11y.ignoreRule",
+  ]) {
+    assert.ok(commands.includes(c), `falta ${c}`);
+  }
+});
+
 export async function run(): Promise<void> {
   for (const t of tests) {
     try {

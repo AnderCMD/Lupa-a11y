@@ -13,7 +13,7 @@ describe("traducciones al español", () => {
     expect(t.mensaje.length).toBeLessThanOrEqual(90);
     expect(t.afectados.length).toBeGreaterThan(0);
     expect(t.wcag.url).toMatch(/^https:\/\/www\.w3\.org\/WAI\/WCAG22\//);
-    expect(t.docsUrl).toContain(t.ruleId.replace("jsx-a11y/", ""));
+    expect(t.docsUrl).toContain(t.ruleId.slice(t.ruleId.lastIndexOf("/") + 1));
     expect(t.malEjemplo).not.toBe(t.bienEjemplo);
   });
 
