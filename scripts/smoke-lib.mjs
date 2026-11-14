@@ -44,3 +44,17 @@ const help = execFileSync(
 );
 assert.match(help, /Uso: lupa-a11y/);
 console.log("  ✓ CLI");
+
+// npm corrige (y a veces descarta) campos inválidos del package.json al publicar;
+// la CLI depende de `bin`, así que un aviso aquí es un error.
+const { spawnSync } = await import("node:child_process");
+const dryRunResult = spawnSync("npm", ["publish", "--dry-run", "--ignore-scripts", "./dist-lib"], {
+  encoding: "utf8",
+});
+// Los avisos de npm salen por stderr.
+const dryRun = `${dryRunResult.stdout}\n${dryRunResult.stderr}`;
+assert.ok(
+  !/auto-corrected|invalid and removed/.test(dryRun),
+  "npm corrige el package.json de la librería",
+);
+console.log("  ✓ package.json válido para npm");
