@@ -6,6 +6,8 @@ El formato sigue [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y e
 
 ## [Sin publicar]
 
+## [1.1.0] - 2026-11-14
+
 ### Añadido
 
 - Soporte para **Vue** (`.vue`, con `eslint-plugin-vuejs-accessibility`), **Svelte**, **Astro**, **plantillas de Angular** y **HTML** (con `@html-eslint`), además de `.js` con JSX (Next.js, Preact, Solid, Qwik…).
