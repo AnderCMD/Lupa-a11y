@@ -4,11 +4,11 @@ Extensión de VS Code y librería (`lupa-a11y-core`) que analiza la accesibilida
 
 ## Ramas (ver docs/flujo-de-trabajo.md)
 
-- `main` es producción: **nunca** commits directos. Solo PR desde `dev` o `hotfix/*`, con merge commit.
-- El PR a `main` exige los checks `build` y `origen-permitido` y que `dev` esté al día con `main`; si no lo está, `git merge origin/main` en `dev`.
+- `main` es producción: **nunca** commits directos. Solo PR desde `dev` o `hotfix/*` (convención; GitHub no lo bloquea), con merge commit. Las reglas son las mismas que en RizomaDB.
+- El PR a `main` exige los checks `build` y `secrets` y que `dev` esté al día con `main`; si no lo está, `git merge origin/main` en `dev`.
 - Auto-merge está desactivado: se mezcla a mano con `gh pr merge --merge` cuando la CI está en verde.
 - El trabajo nuevo va en `feature/*`, `fix/*`, `traduccion/*` o `docs/*` desde `dev`.
-- Una versión sale así: `npm run release:prepare -- X.Y.Z` en `dev` → PR a `main` → merge → `git tag vX.Y.Z` en `main` → push de la etiqueta. Publica en GitHub Releases, Marketplace y npm; el environment `production` espera la aprobación de la persona mantenedora.
+- Una versión sale así: `npm run release:prepare -- X.Y.Z` en `dev` → PR a `main` (`gh workflow run promote.yml`) → merge → `git tag vX.Y.Z` en `main` → push de la etiqueta. Publica en GitHub Releases, Marketplace y npm; el environment `production` no pide aprobación: **la etiqueta publica sola**.
 - No crees etiquetas, no publiques y no mezcles en `main` sin que la persona lo pida.
 
 ## Antes de dar algo por terminado
