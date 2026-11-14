@@ -6,6 +6,10 @@ El formato sigue [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y e
 
 ## [Sin publicar]
 
+### Corregido
+
+- `lupa-a11y-core` publica de nuevo el comando `lupa-a11y`: npm descartaba el `bin` por la forma de su ruta.
+
 ## [1.1.0] - 2026-11-14
 
 ### Añadido

@@ -71,7 +71,8 @@ async function main(): Promise<void> {
     main: "./index.cjs",
     module: "./index.mjs",
     types: "./types/lib.d.ts",
-    bin: { "lupa-a11y": "./cli.cjs" },
+    // Sin "./": npm 11 descarta en silencio un bin con esa forma al publicar.
+    bin: { "lupa-a11y": "cli.cjs" },
     exports: {
       ".": {
         types: "./types/lib.d.ts",
