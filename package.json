@@ -2,7 +2,7 @@
   "name": "lupa-a11y",
   "displayName": "Lupa A11y",
   "description": "Linter de accesibilidad con explicaciones en español para React, Next.js, Vue, Svelte, Astro, Angular, Solid, Preact y HTML",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "publisher": "AnderCMD",
   "icon": "assets/brand/icon-256.png",
   "galleryBanner": {
