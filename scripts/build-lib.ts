@@ -81,7 +81,7 @@ async function main(): Promise<void> {
       },
       "./package.json": "./package.json",
     },
-    files: ["index.cjs", "index.mjs", "cli.cjs", "types", "README.md", "LICENSE"],
+    files: ["index.cjs", "index.mjs", "cli.cjs", "types", "README.md", "LICENSE", "NOTICE"],
     engines: { node: ">=20" },
     sideEffects: false,
     dependencies: {
@@ -98,6 +98,7 @@ async function main(): Promise<void> {
   writeFileSync(join(out, "package.json"), JSON.stringify(manifest, null, 2) + "\n");
   copyFileSync(join(__dirname, "lib-README.md"), join(out, "README.md"));
   copyFileSync(join(root, "LICENSE"), join(out, "LICENSE"));
+  copyFileSync(join(root, "NOTICE"), join(out, "NOTICE"));
   console.log(`lupa-a11y-core@${pkg.version} listo en dist-lib/`);
 }
 

@@ -11,7 +11,7 @@
 [![VS Code Marketplace](https://img.shields.io/visual-studio-marketplace/v/AnderCMD.lupa-a11y?label=VS%20Code%20Marketplace)](https://marketplace.visualstudio.com/items?itemName=AnderCMD.lupa-a11y)
 [![Instalaciones](https://img.shields.io/visual-studio-marketplace/i/AnderCMD.lupa-a11y?label=instalaciones)](https://marketplace.visualstudio.com/items?itemName=AnderCMD.lupa-a11y)
 [![npm](https://img.shields.io/npm/v/lupa-a11y-core?label=npm%20lupa-a11y-core)](https://www.npmjs.com/package/lupa-a11y-core)
-[![Licencia: MIT](https://img.shields.io/badge/licencia-MIT-blue.svg)](LICENSE)
+[![Licencia: Apache 2.0](https://img.shields.io/badge/licencia-Apache%202.0-blue.svg)](LICENSE)
 
 **Linter de accesibilidad con explicaciones en español para React, Next.js, Vue, Nuxt, Svelte, SvelteKit, Astro, Angular, Solid, Preact, Qwik y HTML.**
 
@@ -229,4 +229,4 @@ Lupa A11y es un proyecto independiente, sin relación con W3C, Deque, ESLint ni 
 
 ## Licencia
 
-[MIT](LICENSE)
+[Apache 2.0](LICENSE)

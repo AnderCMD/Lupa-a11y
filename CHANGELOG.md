@@ -6,6 +6,10 @@ El formato sigue [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y e
 
 ## [Sin publicar]
 
+### Cambiado
+
+- La licencia del proyecto pasa de MIT a Apache 2.0 (`LICENSE`, `NOTICE`, `package.json` y documentación).
+
 ## [1.1.1] - 2026-11-14
 
 ### Corregido
