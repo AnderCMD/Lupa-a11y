@@ -62,4 +62,4 @@ El texto "Lupa A11y" usa **Inter Bold** (Rasmus Andersson y The Inter Project Au
 
 ## Licencia
 
-Los recursos de marca se publican bajo la misma licencia MIT del proyecto. La tipografía Inter conserva su propia licencia OFL 1.1.
+Los recursos de marca se publican bajo la misma licencia Apache 2.0 del proyecto. La tipografía Inter conserva su propia licencia OFL 1.1.

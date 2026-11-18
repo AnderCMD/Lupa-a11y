@@ -55,4 +55,4 @@ Para Vue, Svelte, Astro o HTML basta con el nombre del archivo: `runEslint(code,
 
 El análisis estático no detecta todo ni sustituye probar con un lector de pantalla. Las reglas sin traducción devuelven el mensaje original con el sufijo " (sin traducir)".
 
-Licencia MIT. Hecho sobre [`eslint-plugin-jsx-a11y`](https://github.com/jsx-eslint/eslint-plugin-jsx-a11y), [`eslint-plugin-vuejs-accessibility`](https://github.com/vue-a11y/eslint-plugin-vuejs-accessibility), [`@html-eslint`](https://html-eslint.org/) y las [WCAG 2.2](https://www.w3.org/TR/WCAG22/).
+Licencia Apache 2.0. Hecho sobre [`eslint-plugin-jsx-a11y`](https://github.com/jsx-eslint/eslint-plugin-jsx-a11y), [`eslint-plugin-vuejs-accessibility`](https://github.com/vue-a11y/eslint-plugin-vuejs-accessibility), [`@html-eslint`](https://html-eslint.org/) y las [WCAG 2.2](https://www.w3.org/TR/WCAG22/).
